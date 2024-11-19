@@ -4,6 +4,7 @@ const appointmentSchema = new Schema({
   residentId: {
     type: ObjectId,
     required: true,
+    ref: "Resident"
   },
 
   timeslot: {
