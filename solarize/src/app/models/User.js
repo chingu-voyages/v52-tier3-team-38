@@ -9,19 +9,30 @@ const userSchema = new Schema({
   email: {
     type: String,
     required: true,
+    unique: true
+  },
+
+  role: {
+    type: Number,
+    enum: [0,1], // 0 = Resident, 1 = Admin
+    required: true
   },
 
   address: {
     type: String,
-    required: true,
+    required: function() {
+      return this.role === 0;
+    }
   },
 
   phoneNumber: {
     type: String,
-    required: true
+    required: function() {
+      return this.role === 0;
+    }
   }
 });
 
-const user = mongoose.models.User || mongoose.model("User", userSchema); 
+const User = mongoose.models.User || mongoose.model("User", userSchema); 
 
 export default User;
