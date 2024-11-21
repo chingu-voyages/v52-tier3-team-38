@@ -10,7 +10,7 @@ export const POST = async(req) => {
 
     const userExists = await User.find({email: body.email});
 
-    if (userExists > 0) return NextResponse.json({error: "User with this email already exists"}, {status: 403});
+    if (userExists.length > 0) return NextResponse.json({error: "User with this email already exists"}, {status: 409});
 
     const user = await User.create({
       name: body.name,
