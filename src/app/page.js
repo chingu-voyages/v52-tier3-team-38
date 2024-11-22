@@ -20,7 +20,12 @@ export default function Home() {
       </div>
       <div>
       <h2>Benefits of Going Solar</h2>
-      <p></p>
+      <ul>
+        <li>Save Money: Cut your electricity costs with solar-powered energy.</li>
+        <li>Boost Property Value: Solar panels increase the value of your home.</li>
+        <li>Protect the Environment: Reduce reliance on fossil fuels and help combat global warming.</li>
+        <li>Energy Independence: Harness the power of the sun to reduce dependence on traditional utilities.</li>
+      </ul>
       </div>
       <div>
       <h1>Get Started Today!</h1>
