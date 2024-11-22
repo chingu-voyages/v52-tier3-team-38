@@ -12,8 +12,8 @@ const Header = () => {
     <>
     <div>Header</div>
     <h1>Solarize</h1>
-    <Button variant="primary" onClick={() => router.push("/user/signup")}>Sign Up!</Button>
-    <Button variant="primary" onClick={() => router.push("/user/login")}>Log In</Button>
+    <Button variant="primary" onClick={() => router.push("/signup")}>Sign Up!</Button>
+    <Button variant="primary" onClick={() => router.push("/login")}>Log In</Button>
     <Button variant="danger">Log Out</Button>
     </>
   )
