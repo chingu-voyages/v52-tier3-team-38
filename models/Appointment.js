@@ -1,5 +1,7 @@
 import { mongoose, Schema }  from 'mongoose'
 
+const { ObjectId } = mongoose.Schema.Types;
+
 const appointmentSchema = new Schema({
   residentId: {
     type: ObjectId,
@@ -24,6 +26,6 @@ const appointmentSchema = new Schema({
   },
 });
 
-const Appointment = mongoose.models.Resident || mongoose.model("Appointment", appointmentSchema); 
+const Appointment = mongoose.models.Appointment || mongoose.model("Appointment", appointmentSchema); 
 
 export default Appointment;
