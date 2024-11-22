@@ -1,52 +1,32 @@
-import Image from "next/image";
+"use client"
+ 
+import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 
 export default function Home() {
+  const router = useRouter()
   return (
     <div className={styles.page}>
       <main className={styles.main}>
       <h1>This is the landing page.</h1>
       <h2>A landing page is like a home page, but fancier.</h2>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.js</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
+      <div>
+      <h2>Power Your Home with Solar Energy</h2>
+      <p>Join thousands of citizens in the fight against global warming and make your home a part of the solution! By installing solar panels, you can reduce your carbon footprint, lower your energy bills, and contribute to a brighter, more sustainable future for our city. Solar energy is clean, renewable, and the perfect way to take advantage of the abundant sunshine.</p>
+      </div>
+      <div>
+      <h2>Why Choose Our Solar Panel Planning App?</h2>
+      <p>We understand that planning solar panel installation can feel overwhelming. That’s why Los Angeles has developed this free, user-friendly app to simplify the process and bring solar energy within reach for every resident.</p>
+      </div>
+      <div>
+      <h2>Benefits of Going Solar</h2>
+      <p></p>
+      </div>
+      <div>
+      <h1>Get Started Today!</h1>
+      <p>Our solar planning app makes it easy to schedule your evaluation and take the first step toward clean energy. Start your solar journey now—schedule your free visit and let’s build a greener Los Angeles together!</p>
+      <button onClick={() => router.push("/signup")}>Get started!</button>
+      </div>
       </main>
     </div>
   );
