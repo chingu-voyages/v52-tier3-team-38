@@ -79,4 +79,4 @@ function FormExample() {
   );
 }
 
-export default FormExample;
+export default page;
