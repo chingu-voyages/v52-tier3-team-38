@@ -30,7 +30,6 @@ function loginForm() {
             placeholder="First name"
             defaultValue="Mark"
           />
-          <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
         </Form.Group>
         <Form.Group as={Col} md="4" controlId="validationCustom02">
           <Form.Label>Last name</Form.Label>
@@ -40,7 +39,6 @@ function loginForm() {
             placeholder="Last name"
             defaultValue="Otto"
           />
-          <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
         </Form.Group>
       </Row>
       <Row className="mb-3">
