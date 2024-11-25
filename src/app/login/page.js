@@ -29,18 +29,12 @@ const Login = () => {
   return (
     <div
       className="sign-in__wrapper"
-      style={{ backgroundImage: `url(${BackgroundImage})` }}
     >
       {/* Overlay */}
       <div className="sign-in__backdrop"></div>
       {/* Form */}
       <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}>
         {/* Header */}
-        <img
-          className="img-thumbnail mx-auto d-block mb-2"
-          src={Logo}
-          alt="logo"
-        />
         <div className="h4 mb-2 text-center">Sign In</div>
         {/* ALert */}
         {show ? (
