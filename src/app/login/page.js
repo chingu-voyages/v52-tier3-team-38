@@ -105,4 +105,4 @@ const Login = () => {
   );
 };
 
-export default page;
+export default Login;
