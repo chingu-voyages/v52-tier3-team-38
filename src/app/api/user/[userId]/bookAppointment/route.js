@@ -3,7 +3,7 @@ import Appointment from "../../../../../../models/Appointment";
 import User from "../../../../../../models/User";
 import dbConnect from "../../../../../../utils/dbConnect";
 
-export const POST = async(request, { params }) => {
+export const POST = async(request, { params }) => { //needs to be rewritten to handle transition to supabase
   try {
     await dbConnect();
 
