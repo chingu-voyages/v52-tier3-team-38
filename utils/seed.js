@@ -3,10 +3,12 @@ import dbConnect from "./dbConnect.js";
 import { faker } from "@faker-js/faker"
 
 const createFakeUser = () => {
+
   return {
     name: faker.person.fullName(),
     email: faker.internet.email(),
     role: 0,
+    password: faker.internet.password(),
     address: faker.location.streetAddress(), //will need to handle for LA
     phoneNumber: faker.phone.number()
   }
