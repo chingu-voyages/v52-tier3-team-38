@@ -1,14 +1,16 @@
-import User from '../models/User.js';
-import dbConnect from "./dbConnect.js";
 import { faker } from "@faker-js/faker"
+import { createClient } from '@supabase/supabase-js';
+import dotenv from 'dotenv'
+dotenv.config();
 
 const createFakeUser = () => {
   return {
     name: faker.person.fullName(),
     email: faker.internet.email(),
     role: 0,
+    password: faker.internet.password(),
     address: faker.location.streetAddress(), //will need to handle for LA
-    phoneNumber: faker.phone.number()
+    phone_number: faker.phone.number()
   }
 };
 
@@ -23,14 +25,19 @@ export const generateFakeUsers = (length) => {
 };
 
 export const seed = async() => {
-  await dbConnect();
+  const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
   const users = generateFakeUsers(10);
 
-  await User.insertMany(users);
-  
-  const data = await User.find();
-  console.log(data);
+  const response = await supabase.from('users').insert(users);
+
+  if (response.error) {
+    console.log(error);
+  }
+
+  const res = await supabase.from('users').select('*');
+
+  console.log(res.data);
 }
 
 seed();

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import dbConnect from '../../../../../utils/dbConnect';
 import User from '../../../../../models/User';
 
-export const POST = async(req) => {
+export const POST = async(req) => { //needs be rewritten to handle transition to supabase
   try {
     await dbConnect();
 
