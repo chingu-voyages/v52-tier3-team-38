@@ -12,10 +12,10 @@ export async function login(formData) {
     password: formData.get('password')
   }
 
-  const { data, error } = await supabase.auth.signInWithPassword(credentials)
+  const { error } = await supabase.auth.signInWithPassword(credentials)
 
   if (error) {
-    redirect('/error')
+    return { error }
   }
 
   revalidatePath('/', 'layout')
@@ -63,7 +63,7 @@ export async function logout() {
 
   if (error) {
     console.log(error);
-    redirect('/error')
+    return {error: error}
   }
 
   revalidatePath('/', 'layout')
