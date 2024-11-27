@@ -68,7 +68,7 @@ const Signup = () => {
         </Form.Group>
 
         <Form.Group className="mb-2" controlId="email">
-          <Form.Label>Email</Form.Label>
+        <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
             value={email}
@@ -77,6 +77,7 @@ const Signup = () => {
             required
           />
         </Form.Group>
+
         <Form.Group className="mb-2" controlId="password">
           <Form.Label>Password</Form.Label>
           <Form.Control
