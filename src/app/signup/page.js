@@ -19,8 +19,11 @@ const Signup = () => {
     setLoading(true);
 
     const formData = new FormData(event.target);
-    formData.append("email", inputEmail)
-    formData.append("password", inputPassword)
+    formData.append("name", name)
+    formData.append("email", email)
+    formData.append("password", password)
+    formData.append("address", address)
+    formData.append("phoneNumber", phoneNumber)
 
     await signup(formData);
 
