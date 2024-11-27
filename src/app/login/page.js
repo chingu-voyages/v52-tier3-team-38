@@ -23,6 +23,8 @@ const Login = () => {
     setLoading(false);
   };
 
+  const handlePassword = () => {}; // Will address later
+
   return (
     <div
       className="sign-in__wrapper"
