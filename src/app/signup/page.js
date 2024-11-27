@@ -111,7 +111,7 @@ const Signup = () => {
           <Form.Control
             type="tel"
             value={phoneNumber}
-            placeholder="Phone Number"
+            placeholder="Phone Number ex: 123-456-789"
             onChange={(e) => setPhoneNumber(e.target.value)}
             required
             pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
