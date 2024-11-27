@@ -47,7 +47,7 @@ const Login = () => {
             onClose={() => setError(false)}
             dismissible
           >
-            Incorrect username or password.
+            Incorrect username or password. Please try again.
           </Alert>
         ) : (
           <div />
