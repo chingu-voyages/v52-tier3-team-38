@@ -25,11 +25,9 @@ const Signup = () => {
     formData.append("address", address)
     formData.append("phoneNumber", phoneNumber)
 
-    const { error } = await signup(formData);
+    const response = await signup(formData);
 
-    console.log(error)
-
-    if (error) {
+    if (response.error) {
       setError(true);
     }
 
