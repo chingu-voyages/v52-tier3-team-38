@@ -114,6 +114,8 @@ const Signup = () => {
             placeholder="Phone Number"
             onChange={(e) => setPhoneNumber(e.target.value)}
             required
+            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+            title="Phone number must be in the format 123-456-7890"
           />
         </Form.Group>
       
