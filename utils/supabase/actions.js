@@ -1,5 +1,4 @@
 'use server'
-
 import { revalidatePath } from "next/cache"
 import { redirect } from 'next/navigation'
 import { createClient } from "./server"
@@ -19,7 +18,7 @@ export async function login(formData) {
   }
 
   revalidatePath('/', 'layout')
-  redirect('/')
+  redirect('/') //redirects to landing page if login was successful.
 }
 
 export async function signup(formData) {
@@ -39,7 +38,7 @@ export async function signup(formData) {
 
   console.log(data)
 
-  const additonalCredentials = { //after the user is signed up store the additional info in the users table
+  const additonalCredentials = { // after the user is signed up store the additional info in the user_details table which is connected to auth.users in a 1 to 1 relationship.
     id: data.user.id,
     name: formData.get('name'),
     address: formData.get('address'),
