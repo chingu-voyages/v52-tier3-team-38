@@ -1,10 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
-import { login, signup } from "./actions";
+import { login } from "./actions";
 
 const Login = () => {
-  const [inputUsername, setInputUsername] = useState("");
+  const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
 
   const [show, setShow] = useState(false);
@@ -13,11 +13,13 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    await delay(500);
-    console.log(`Username :${inputUsername}, Password :${inputPassword}`);
-    if (inputUsername !== "admin" || inputPassword !== "admin") {
-      setShow(true);
-    }
+
+    const formData = new FormData(event.target);
+    formData.append("email", inputEmail)
+    formData.append("password", inputPassword)
+
+    await login(formData);
+
     setLoading(false);
   };
 
@@ -51,12 +53,12 @@ const Login = () => {
           <div />
         )}
         <Form.Group className="mb-2" controlId="username">
-          <Form.Label>Username</Form.Label>
+          <Form.Label>email</Form.Label>
           <Form.Control
             type="text"
-            value={inputUsername}
-            placeholder="Username"
-            onChange={(e) => setInputUsername(e.target.value)}
+            value={inputEmail}
+            placeholder="Email"
+            onChange={(e) => setInputEmail(e.target.value)}
             required
           />
         </Form.Group>
