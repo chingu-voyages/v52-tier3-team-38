@@ -22,7 +22,7 @@ const Login = () => {
 
     setLoading(false);
   };
-  
+
   return (
     <div
       className="sign-in__wrapper"
@@ -46,7 +46,7 @@ const Login = () => {
         ) : (
           <div />
         )}
-        <Form.Group className="mb-2" controlId="username">
+        <Form.Group className="mb-2" controlId="email">
           <Form.Label>email</Form.Label>
           <Form.Control
             type="text"
