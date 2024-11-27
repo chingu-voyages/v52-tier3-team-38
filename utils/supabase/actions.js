@@ -33,7 +33,7 @@ export async function signup(formData) {
 
   if (error) {
     console.log(error)
-    redirect('/error')
+    return { error }
   }
 
   console.log(data)
@@ -48,7 +48,7 @@ export async function signup(formData) {
   const { error: insertError } = await supabase.from('user_details').insert(additonalCredentials)
 
   if (insertError) {
-    redirect('/error')
+    return { insertError }
   }
 
   revalidatePath('/', 'layout')
