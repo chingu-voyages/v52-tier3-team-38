@@ -22,13 +22,7 @@ const Login = () => {
 
     setLoading(false);
   };
-
-  const handlePassword = () => {};
-
-  function delay(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
+  
   return (
     <div
       className="sign-in__wrapper"
