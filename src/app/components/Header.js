@@ -1,9 +1,8 @@
 "use client";
 
 import { Button } from "react-bootstrap"
-
 import { useRouter } from "next/navigation"
-import { logout } from "../login/actions";
+import { logout } from "../../../utils/supabase/actions";
 
 const Header = () => {
 

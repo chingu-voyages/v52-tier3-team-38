@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
-import { signup } from "../login/actions";
+import { signup } from "../../../utils/supabase/actions";
 
 const Signup = () => {
   const [name, setName] = useState("");
