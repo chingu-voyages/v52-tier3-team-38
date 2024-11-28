@@ -18,20 +18,20 @@ export const POST = async(request, { params }) => {
 
     if (error) return NextResponse.json({error: "A user with this id does not exist "}, {status: 404});
 
-    if (user.role === 1) return NextResponse.json({error: "Admins cannot book appointments."}, {status: 403});
+    // if (user.role === 1) return NextResponse.json({error: "Admins cannot book appointments."}, {status: 403});
 
     const alreadyHasAppointment = await supabase.from("appointments").select("*").eq("resident_id", userId)
 
-    if (alreadyHasAppointment.data.length > 0) return NextResponse.json({error: `${user.name} cannot have more than one appointment booked.`}, {status: 403});
+    if (alreadyHasAppointment.data.length > 0) return NextResponse.json({error: `Error: You already have an appointment booked.`}, {status: 403});
 
-    const createdAppointment = await supabase.from('appointments').insert({
+    const appointmentInsertInfo = await supabase.from('appointments').insert({
       resident_id: userId,
       timeslot: body.timeslot,
       address:  body.address
       //status is not needed here as it is pending by default
     })
 
-    return NextResponse.json({ message: `Appointment for ${user.name} sucessfully created`, createdAppointment }, { status: 201 });
+    return NextResponse.json({ message: `Appointment for ${user.name} sucessfully created`, appointmentInsertInfo }, { status: 201 });
   } catch (err) {
     return NextResponse.json({ error: err }, { status: 400 });
   }
