@@ -1,6 +1,6 @@
 import localFont from "next/font/local";
 import "./globals.css";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import UserHeader from "./components/UserHeader";
 import UserNavbar from "./components/UserNavbar";
@@ -10,6 +10,8 @@ import UnauthNavbar from "./components/UnauthNavbar";
 import { getUserDetails } from "../../utils/supabase/getUserDetails";
 
 import { createClient } from "../../utils/supabase/server";
+import AdminHeader from "./components/AdminHeader";
+import AdminNavbar from "./components/AdminNavbar";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,10 +30,9 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
+  const supabase = await createClient();
 
-  const supabase = await createClient()
-
-  const { data, error } = await supabase.auth.getUser()
+  const { data, error } = await supabase.auth.getUser();
 
   if (error) {
     console.error("Error fetching user:", error);
@@ -45,26 +46,37 @@ export default async function RootLayout({ children }) {
 
   if (data.user) {
     return (
-    <html lang='en' suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-      <UserHeader />
-        {children}
-      <UserNavbar />
-      </body>
-    </html>
-  );
+      <html lang="en" suppressHydrationWarning>
+        <body className={`${geistSans.variable} ${geistMono.variable}`}>
+          <UserHeader />
+          {children}
+          <UserNavbar />
+        </body>
+      </html>
+    );
+  }
+
+  if (data.user && userDetails.role === "1") {
+    return (
+      <html lang="en" suppressHydrationWarning>
+        <body className={`${geistSans.variable} ${geistMono.variable}`}>
+          <AdminHeader />
+          {children}
+          <AdminNavbar />
+        </body>
+      </html>
+    );
   }
 
   if (!data.user) {
     return (
-    <html lang='en' suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-      <UnauthHeader />
-        {children}
-      <UnauthNavbar />
-      </body>
-    </html>
-  );
+      <html lang="en" suppressHydrationWarning>
+        <body className={`${geistSans.variable} ${geistMono.variable}`}>
+          <UnauthHeader />
+          {children}
+          <UnauthNavbar />
+        </body>
+      </html>
+    );
   }
-
 }
