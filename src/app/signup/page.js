@@ -11,7 +11,7 @@ const Signup = () => {
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
-  const [show, setShow] = useState(false);
+  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event) => {
@@ -25,7 +25,11 @@ const Signup = () => {
     formData.append("address", address)
     formData.append("phoneNumber", phoneNumber)
 
-    await signup(formData);
+    const response = await signup(formData);
+
+    if (response.error) {
+      setError(true);
+    }
 
     setLoading(false);
   };
@@ -43,14 +47,14 @@ const Signup = () => {
         {/* Header */}
         <div className="h4 mb-2 text-center">Sign Up</div>
         {/* ALert */}
-        {show ? (
+        {error ? (
           <Alert
             className="mb-2"
             variant="danger"
-            onClose={() => setShow(false)}
+            onClose={() => setError(false)}
             dismissible
           >
-            Incorrect username or password.
+            An error occured, please try again.
           </Alert>
         ) : (
           <div />
@@ -105,9 +109,11 @@ const Signup = () => {
           <Form.Control
             type="tel"
             value={phoneNumber}
-            placeholder="Phone Number"
+            placeholder="Phone Number ex: 123-456-789"
             onChange={(e) => setPhoneNumber(e.target.value)}
             required
+            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+            title="Phone number must be in the format 123-456-7890"
           />
         </Form.Group>
       

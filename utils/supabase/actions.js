@@ -1,5 +1,4 @@
 'use server'
-
 import { revalidatePath } from "next/cache"
 import { redirect } from 'next/navigation'
 import { createClient } from "./server"
@@ -12,14 +11,14 @@ export async function login(formData) {
     password: formData.get('password')
   }
 
-  const { data, error } = await supabase.auth.signInWithPassword(credentials)
+  const { error } = await supabase.auth.signInWithPassword(credentials)
 
   if (error) {
-    redirect('/error')
+    return { error }
   }
 
   revalidatePath('/', 'layout')
-  redirect('/')
+  redirect('/') //redirects to landing page if login was successful.
 }
 
 export async function signup(formData) {
@@ -34,12 +33,12 @@ export async function signup(formData) {
 
   if (error) {
     console.log(error)
-    redirect('/error')
+    return { error }
   }
 
   console.log(data)
 
-  const additonalCredentials = { //after the user is signed up store the additional info in the users table
+  const additonalCredentials = { // after the user is signed up store the additional info in the user_details table which is connected to auth.users in a 1 to 1 relationship.
     id: data.user.id,
     name: formData.get('name'),
     address: formData.get('address'),
@@ -49,7 +48,7 @@ export async function signup(formData) {
   const { error: insertError } = await supabase.from('user_details').insert(additonalCredentials)
 
   if (insertError) {
-    redirect('/error')
+    return { insertError }
   }
 
   revalidatePath('/', 'layout')
@@ -63,7 +62,7 @@ export async function logout() {
 
   if (error) {
     console.log(error);
-    redirect('/error')
+    return {error: error}
   }
 
   revalidatePath('/', 'layout')

@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from "./client";
 
-export const getUserDetails = async (userId) => {
+export const getUserDetails = async (userId) => { // Helper function to get user details of logged in user.
   const supabase = await createClient();
 
   const { data, error } = await supabase.from('user_details').select('*').eq('id', userId).single();
@@ -11,6 +11,5 @@ export const getUserDetails = async (userId) => {
     redirect('/error');
   }
 
-  // console.log(data)
   return data;
 }

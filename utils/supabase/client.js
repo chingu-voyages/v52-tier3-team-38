@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 
-export function createClient() {
+export function createClient() { // Creates a client to give frontend access to Supabase APIs
   return createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
