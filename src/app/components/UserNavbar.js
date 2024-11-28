@@ -6,7 +6,7 @@ import { FaGithub } from "react-icons/fa";
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 
-const Navbar = () => {
+const UserNavbar = () => {
 
   const router = useRouter()
 
@@ -26,4 +26,4 @@ const Navbar = () => {
   )
 }
 
-export default Navbar
+export default UserNavbar

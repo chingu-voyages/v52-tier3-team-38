@@ -3,7 +3,7 @@
 import { Button } from "react-bootstrap"
 import { logout } from "../../../utils/supabase/actions";
 
-const Header = () => {
+const UserHeader = () => {
 
   return (
     <>
@@ -15,4 +15,4 @@ const Header = () => {
   )
 }
 
-export default Header
+export default UserHeader
