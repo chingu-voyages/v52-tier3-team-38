@@ -11,7 +11,6 @@ const AppointmentForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form submitted:", { name, address, appointmentDate, timeSlot });
-    // Handle the form submission logic here, e.g., call an API or save data
   };
 
   return (
@@ -31,7 +30,7 @@ const AppointmentForm = () => {
           />
         </Form.Group>
 
-        {/* Can have this autofill to whatever the users address is */}
+        {/* Can have this autofill to whatever the users name is */}
         <Form.Group className="mb-3" controlId="address">
           <Form.Label>Address</Form.Label>
           <Form.Control
