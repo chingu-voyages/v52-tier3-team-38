@@ -5,12 +5,27 @@ import { Form, Button, Container } from "react-bootstrap";
 const AppointmentForm = () => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
-  const [appointmentDate, setAppointmentDate] = useState("");
-  const [timeSlot, setTimeSlot] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form submitted:", { name, address, appointmentDate, timeSlot });
+  const handleSubmit = async(event) => {
+    event.preventDefault();
+
+    const timeslot = `${date} ${time}:00`
+    const userId = "a6d9e5cd-c241-45c2-9fcb-314e6d413eae"
+    try {
+      const response = await fetch(`/api/user/${userId}/bookAppointment`, {
+        method: "POST",
+        body: JSON.stringify({timeslot, address})
+      })
+
+      const data = await response.json()
+
+      console.log(data)
+
+    } catch (err) {
+      console.log(err)
+    }
   };
 
   return (
@@ -46,8 +61,8 @@ const AppointmentForm = () => {
           <Form.Label>Appointment Date</Form.Label>
           <Form.Control
             type="date"
-            value={appointmentDate}
-            onChange={(e) => setAppointmentDate(e.target.value)}
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
             required
           />
         </Form.Group>
@@ -56,8 +71,8 @@ const AppointmentForm = () => {
           <Form.Label>Appointment Time</Form.Label>
           <Form.Control
             type="time"
-            value={timeSlot}
-            onChange={(e) => setTimeSlot(e.target.value)}
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
             required
           />
         </Form.Group>
