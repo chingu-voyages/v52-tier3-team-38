@@ -22,7 +22,7 @@ export default async function RootLayout({ children }) {
 
   const { data: { user }, error } = await supabase.auth.getUser();
 
-  if (error || !user) {
+  if (error) {
     console.error("Error fetching user or no user found:", error);
     return (
       <html lang="en" suppressHydrationWarning>
@@ -38,7 +38,7 @@ export default async function RootLayout({ children }) {
   const userDetails = await getUserDetails(user.id);
   console.log("User details:", userDetails);
 
-  if (userDetails.role === "1") {
+  if (userDetails.role === 1) {
     return (
       <html lang="en" suppressHydrationWarning>
         <body>

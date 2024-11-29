@@ -9,7 +9,7 @@ const UserHeader = () => {
     <>
     <div>Header</div>
     <h1>Solarize</h1>
-    <h3>Logged in as Resident!</h3>
+    <h3>Logged in as resident!</h3>
     <Button variant="danger" onClick={() => logout()}>Log Out</Button>
     </>
   )
