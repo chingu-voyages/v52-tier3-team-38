@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import dotenv from 'dotenv';
 dotenv.config();
 
-export async function updateSession(request) {
+export async function updateSession(request) { // handles session management, makes sure user is authenticated by updating and managing cookies. ex: stores JWT token for every request without reauthenticating the user.
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(

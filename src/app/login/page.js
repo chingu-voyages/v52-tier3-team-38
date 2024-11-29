@@ -7,7 +7,7 @@ const Login = () => {
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
 
-  const [show, setShow] = useState(false);
+  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event) => {
@@ -18,7 +18,11 @@ const Login = () => {
     formData.append("email", inputEmail)
     formData.append("password", inputPassword)
 
-    await login(formData);
+    const response = await login(formData);
+
+    if ( response.error ) { // shows if the response failed.
+      setError(true)
+    }
 
     setLoading(false);
   };
@@ -36,14 +40,14 @@ const Login = () => {
         {/* Header */}
         <div className="h4 mb-2 text-center">Sign In</div>
         {/* ALert */}
-        {show ? (
+        {error ? (
           <Alert
             className="mb-2"
             variant="danger"
-            onClose={() => setShow(false)}
+            onClose={() => setError(false)}
             dismissible
           >
-            Incorrect username or password.
+            Incorrect username or password. Please try again.
           </Alert>
         ) : (
           <div />

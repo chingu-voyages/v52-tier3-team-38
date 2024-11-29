@@ -4,13 +4,22 @@ import dotenv from 'dotenv'
 dotenv.config();
 
 const createFakeUser = () => {
+  const firstName = faker.person.firstName();
+  const lastName = faker.person.lastName();
+
+  const email = `${firstName}.${lastName}@gmail.com`
   return {
-    name: faker.person.fullName(),
-    email: faker.internet.email(),
-    role: 0,
-    password: faker.internet.password(),
-    address: faker.location.streetAddress(), //will need to handle for LA
-    phone_number: faker.phone.number()
+    credentials: {
+      email: email,
+      password: process.env.FAKE_PASSWORD,
+    },
+
+    userDetails: {
+      name: `${firstName} ${lastName}`,
+      address: faker.location.streetAddress(), //will need to handle for LA
+      phone_number: faker.phone.number()
+      //role is not necessary here as it is 0 by default in the db
+    }
   }
 };
 
@@ -27,17 +36,28 @@ export const generateFakeUsers = (length) => {
 export const seed = async() => {
   const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
-  const users = generateFakeUsers(10);
+  const users = generateFakeUsers(5);
 
-  const response = await supabase.from('users').insert(users);
+  for ( const user of users ) {
+    const { credentials, userDetails } = user;
+    
+    const { data, error } = await supabase.auth.signUp(credentials); // signs up user
 
-  if (response.error) {
-    console.log(error);
+    if ( error ) {
+      console.log('ERROR: ', error);
+      return;
+    }
+
+    userDetails["id"] = data.user.id // adds id of created user to userDetails to be stored in user_details table.
+    const res = await supabase.from('user_details').insert(userDetails);
+
+    if ( res.error ) {
+      console.log('ERROR: ', res.error);
+      return;
+    }
+
+    console.log(res);
   }
-
-  const res = await supabase.from('users').select('*');
-
-  console.log(res.data);
 }
 
 seed();

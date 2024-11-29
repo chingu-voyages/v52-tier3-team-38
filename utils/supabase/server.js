@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import dotenv from 'dotenv';
 dotenv.config();
 
-export async function createClient() {
+export async function createClient() { // Creates a server side client to give access to Supabase APIs and provides access to cookies.
   const cookieStore = await cookies();
 
   return createServerClient(

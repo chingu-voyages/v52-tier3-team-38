@@ -2,9 +2,8 @@
 
 import { Button } from "react-bootstrap"
 import { useRouter } from "next/navigation"
-import { logout } from "../../../utils/supabase/actions";
 
-const Header = () => {
+const UnauthHeader = () => {
 
   const router = useRouter()
 
@@ -13,10 +12,10 @@ const Header = () => {
     <div>Header</div>
     <h1>Solarize</h1>
     <Button variant="primary" onClick={() => router.push("/signup")}>Sign Up!</Button>
+    <h3>Have an account?</h3>
     <Button variant="primary" onClick={() => router.push("/login")}>Log In</Button>
-    <Button variant="danger" onClick={() => logout()}>Log Out</Button>
     </>
   )
 }
 
-export default Header
+export default UnauthHeader
