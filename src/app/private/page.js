@@ -1,7 +1,7 @@
-import { redirect } from 'next/navigation'
-import { getUserDetails } from '../../../utils/supabase/getUserDetails'
+import { redirect } from "next/navigation"
+import { getUserDetails } from "../../../utils/supabase/getUserDetails"
 
-import { createClient } from '../../../utils/supabase/server'
+import { createClient } from "../../../utils/supabase/server"
 
 export default async function PrivatePage() {
   const supabase = await createClient()
@@ -22,6 +22,6 @@ export default async function PrivatePage() {
       <p>{userDetails.name}</p>
       <p>{userDetails.address}</p>
       <p>{userDetails.phone_number}</p>
-    </> 
+    </>
   )
 }
