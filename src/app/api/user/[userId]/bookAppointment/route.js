@@ -1,33 +1,37 @@
 import { NextResponse } from "next/server"
-import Appointment from "../../../../../../models/Appointment";
-import User from "../../../../../../models/User";
-import dbConnect from "../../../../../../utils/dbConnect";
+import { createClient } from "../../../../../../utils/supabase/server";
 
-export const POST = async(request, { params }) => { //needs to be rewritten to handle transition to supabase
+export const POST = async(request, { params }) => {
   try {
-    await dbConnect();
+    const supabase = await createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
 
     const body = await request.json();
+
+    console.log(body)
+
     const { userId } = await params;
 
-    const user = await User.findById(userId);
+    console.log(userId)
 
-    if (!user) return NextResponse.json({error: "A user does not exist with this id."}, {status: 404});
+    const { data: user, error } = await supabase.from("user_details").select("*").eq("id", userId).single();
+
+
+    if (error) return NextResponse.json({error: "A user with this id does not exist "}, {status: 404});
 
     if (user.role === 1) return NextResponse.json({error: "Admins cannot book appointments."}, {status: 403});
 
-    const alreadyHasAppointment = await Appointment.find({residentId: userId})
+    const alreadyHasAppointment = await supabase.from("appointments").select("*").eq("resident_id", userId)
 
-    if (alreadyHasAppointment.length > 0) return NextResponse.json({error: `${user.name} cannot have more than one appointment booked.`}, {status: 403});
+    if (alreadyHasAppointment.data.length > 0) return NextResponse.json({error: `Error: You already have an appointment booked.`}, {status: 403});
 
-    const createdAppointment = await Appointment.create({
-      residentId: userId,
+    const appointmentInsertInfo = await supabase.from('appointments').insert({
+      resident_id: userId,
       timeslot: body.timeslot,
       address:  body.address
       //status is not needed here as it is pending by default
     })
 
-    return NextResponse.json({ message: `Appointment for ${user.name} sucessfully created`, createdAppointment }, { status: 201 });
+    return NextResponse.json({ message: `Appointment for ${user.name} sucessfully created`, appointmentInsertInfo }, { status: 201 });
   } catch (err) {
     return NextResponse.json({ error: err }, { status: 400 });
   }
