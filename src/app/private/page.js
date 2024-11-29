@@ -22,6 +22,6 @@ export default async function PrivatePage() {
       <p>{userDetails.name}</p>
       <p>{userDetails.address}</p>
       <p>{userDetails.phone_number}</p>
-    </> 
+    </>
   )
 }
