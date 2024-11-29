@@ -14,7 +14,7 @@ import AdminNavbar from "./components/AdminNavbar";
 
 export const metadata = {
   title: "Solarize",
-  description: "Created by Gary Smith, Ross Clettenberg, Mike Duffy",
+  description: "Developed by Gary Smith, Ross Clettenberg, and Mike Duffey",
 };
 
 export default async function RootLayout({ children }) {
