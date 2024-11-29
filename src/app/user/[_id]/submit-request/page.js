@@ -1,6 +1,7 @@
 "use client"
 import React, { useState } from "react";
 import { Form, Button, Container, Alert } from "react-bootstrap";
+import { useParams } from "next/navigation";
 
 const AppointmentForm = () => {
   const [name, setName] = useState("");
@@ -11,13 +12,14 @@ const AppointmentForm = () => {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const {_id } = useParams();
+
   const handleSubmit = async(event) => {
     event.preventDefault();
 
     const timeslot = `${date} ${time}:00`
-    const userId = "dd110356-aa0e-45a6-9626-a7107ff75eed" // this is a hardcoded value and is only temporary. The idea here in the future is to get the id of the user from the url that was passed down when reaching this page.
     try {
-      const response = await fetch(`/api/user/${userId}/bookAppointment`, {
+      const response = await fetch(`/api/user/${_id}/bookAppointment`, {
         method: "POST",
         body: JSON.stringify({timeslot, address})
       })
