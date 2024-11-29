@@ -15,7 +15,7 @@ const AppointmentForm = () => {
     event.preventDefault();
 
     const timeslot = `${date} ${time}:00`
-    const userId = "dd110356-aa0e-45a6-9626-a7107ff75eed"
+    const userId = "dd110356-aa0e-45a6-9626-a7107ff75eed" // this is a hardcoded value and is only temporary. The idea here in the future is to get the id of the user from the url that was passed down when reaching this page.
     try {
       const response = await fetch(`/api/user/${userId}/bookAppointment`, {
         method: "POST",
