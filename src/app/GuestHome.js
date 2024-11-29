@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 export default function GuestHome() {
   const router = useRouter()
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
+    <div>
+      <main>
       <h1>This is the landing page.</h1>
       <h2>A landing page is like a home page, but fancier.</h2>
       <div>

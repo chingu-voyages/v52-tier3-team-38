@@ -1,13 +1,12 @@
 "use client"
- 
+
 import { useRouter } from "next/navigation";
-import styles from "./page.module.css";
 
 export default function Home() {
   const router = useRouter()
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
+    <div>
+      <main>
       <h1>This is the landing page.</h1>
       <h2>A landing page is like a home page, but fancier.</h2>
       <div>
