@@ -21,7 +21,7 @@ const Login = () => {
     const response = await login(formData);
 
     if ( response.error ) { // shows if the response failed.
-      setError(true)
+      setError(true);
     }
 
     setLoading(false);

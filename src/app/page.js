@@ -1,4 +1,7 @@
-"use client";
+"use client"
+
+import { useRouter } from "next/navigation";
+import styles from "./page.module.css";
 
 import UserPage from "./user/[_id]/profile/page";
 import AdminPage from "./admin/[_id]/profile/page";
