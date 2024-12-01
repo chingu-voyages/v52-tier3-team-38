@@ -20,10 +20,9 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   const supabase = await createClient();
 
-  const { data: { user }, error } = await supabase.auth.getUser();
+  const { data: { user }} = await supabase.auth.getUser();
 
-  if (error) {
-    console.error("Error fetching user or no user found:", error);
+  if (!user) {
     return (
       <html lang="en" suppressHydrationWarning>
         <body>

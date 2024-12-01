@@ -1,27 +1,29 @@
 "use client";
 
-import { Button } from "react-bootstrap";
+import { Nav } from "react-bootstrap";
 import { FaGithub } from "react-icons/fa";
 
-import { useRouter } from "next/navigation"
 import Link from "next/link"
 
 const UnauthNavbar = () => {
 
-  const router = useRouter()
 
   return (
-    <>
+    <Nav fill variant="pills" defaultActiveKey={"/admin/_id/profile"}>
     <div>Resident Navbar</div>
-    <div>
-    <Button variant="primary" onClick={() => router.push("/signup")}>Sign Up!</Button>
-    <Button variant="primary" onClick={() => router.push("/services")}>Services</Button>
-    <Button variant="primary" onClick={() => router.push("/about")}>About Us</Button>
-    </div>
+    <Nav.Item>
+      <Nav.Link href="/signup">Sign Up</Nav.Link>
+    </Nav.Item>
+    <Nav.Item>
+    <Nav.Link href="/services">Services</Nav.Link>
+    </Nav.Item>
+    <Nav.Item>
+    <Nav.Link href="/about">About Us</Nav.Link>
+    </Nav.Item>
     <Link href="https://github.com/chingu-voyages/v52-tier3-team-38" target="_blank">
     <FaGithub />
     </Link>
-    </>
+    </Nav>
   )
 }
 
