@@ -34,20 +34,20 @@ export default async function RootLayout({ children }) {
     );
   }
 
-  const userDetails = await getUserDetails(user.id);
-  console.log("User details:", userDetails);
+  // const userDetails = await getUserDetails(user.id);
+  // console.log("User details:", userDetails);
 
-  if (userDetails.role === 1) {
-    return (
-      <html lang="en" suppressHydrationWarning>
-        <body>
-          <AdminHeader />
-          {children}
-          <AdminNavbar />
-        </body>
-      </html>
-    );
-  }
+  // if (userDetails.role === 1) {
+  //   return (
+  //     <html lang="en" suppressHydrationWarning>
+  //       <body>
+  //         <AdminHeader />
+  //         {children}
+  //         <AdminNavbar />
+  //       </body>
+  //     </html>
+  //   );
+  // }
 
   return (
     <html lang="en" suppressHydrationWarning>

@@ -70,7 +70,7 @@ export async function logout() {
 }
 
 export async function signInWithGoogle() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
@@ -81,10 +81,13 @@ export async function signInWithGoogle() {
     },
   });
 
+  // if the email from the data is not an approved admin, open an error
+
   if (error) {
     console.log(error);
     redirect("/error");
   }
+
 
   redirect(data.url);
 }
