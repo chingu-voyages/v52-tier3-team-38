@@ -19,8 +19,8 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   const supabase = await createClient();
-
-  const { data: { user }} = await supabase.auth.getUser();
+//NEED TO HANDLE REGISTERING ADMIN
+  const { data: { user }} = await supabase.auth.getUser(); 
 
   if (!user) {
     return (
@@ -34,7 +34,7 @@ export default async function RootLayout({ children }) {
     );
   }
 
-  // const userDetails = await getUserDetails(user.id);
+  // const userDetails = await getUserDetails(user.id); NEED TO UNCOMMENT THIS BEFORE PR
   // console.log("User details:", userDetails);
 
   // if (userDetails.role === 1) {
