@@ -1,16 +1,12 @@
 import "./globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import UserHeader from "./components/UserHeader";
-import UserNavbar from "./components/UserNavbar";
-import UnauthHeader from "./components/UnauthHeader";
-import UnauthNavbar from "./components/UnauthNavbar";
-
+import { createClient } from "../../utils/supabase/server";
 import { getUserDetails } from "../../utils/supabase/getUserDetails";
 
-import { createClient } from "../../utils/supabase/server";
-import AdminHeader from "./components/AdminHeader";
-import AdminNavbar from "./components/AdminNavbar";
+import UnauthenticatedLayout from "./components/UnauthenticatedLayout";
+import AdminLayout from "./components/AdminLayout";
+import UserLayout from "./components/UserLayout";
 
 export const metadata = {
   title: "Solarize",
@@ -19,43 +15,19 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   const supabase = await createClient();
-
-  const { data: { user }} = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!user) {
-    return (
-      <html lang="en" suppressHydrationWarning>
-        <body>
-          <UnauthHeader />
-          {children}
-          <UnauthNavbar />
-        </body>
-      </html>
-    );
+    return <UnauthenticatedLayout>{children}</UnauthenticatedLayout>;
   }
 
   const userDetails = await getUserDetails(user.id);
-  console.log("User details:", userDetails);
 
   if (userDetails.role === 1) {
-    return (
-      <html lang="en" suppressHydrationWarning>
-        <body>
-          <AdminHeader />
-          {children}
-          <AdminNavbar />
-        </body>
-      </html>
-    );
+    return <AdminLayout>{children}</AdminLayout>;
   }
 
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body>
-        <UserHeader />
-        {children}
-        <UserNavbar />
-      </body>
-    </html>
-  );
+  return <UserLayout>{children}</UserLayout>;
 }
