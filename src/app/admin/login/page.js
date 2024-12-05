@@ -15,7 +15,7 @@ const Login = () => {
     setLoading(true);
 
     const supabase = await createClient();
-    const response = await supabase.from('approved_admin_emails').select('*').eq('email', email).single();
+    const response = await supabase.from('approved_admin_emails').select('*').eq('email', email).single(); // checks if the email from the form is a approved admin
 
     if ( response.error ) {
       setError(true);
@@ -29,7 +29,6 @@ const Login = () => {
     setLoading(false);
   };
 
-  //NEED TO HANDLE STYLING BEFORE PR
   return (
       <Container>
         <h2 className="text-center mt-4">Admin Login</h2> 

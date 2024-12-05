@@ -81,8 +81,6 @@ export async function signInWithGoogle() {
     },
   });
 
-  // if the email from the data is not an approved admin, open an error
-
   if (error) {
     console.log(error);
     redirect("/error");

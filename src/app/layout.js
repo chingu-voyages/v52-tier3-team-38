@@ -7,6 +7,7 @@ import UnauthHeader from "./components/UnauthHeader";
 import UnauthNavbar from "./components/UnauthNavbar";
 
 import { getUserDetails } from "../../utils/supabase/getUserDetails";
+import { isAdmin } from "../../utils/supabase/isAdmin";
 
 import { createClient } from "../../utils/supabase/server";
 import AdminHeader from "./components/AdminHeader";
@@ -19,10 +20,9 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   const supabase = await createClient();
-//NEED TO HANDLE REGISTERING ADMIN
   const { data: { user }} = await supabase.auth.getUser(); 
 
-  if (!user) {
+  if (!user) { // No current user
     return (
       <html lang="en" suppressHydrationWarning>
         <body>
@@ -34,22 +34,25 @@ export default async function RootLayout({ children }) {
     );
   }
 
-  // const userDetails = await getUserDetails(user.id); NEED TO UNCOMMENT THIS BEFORE PR
-  // console.log("User details:", userDetails);
+  const checkAdmin = await isAdmin(user.email);
 
-  // if (userDetails.role === 1) {
-  //   return (
-  //     <html lang="en" suppressHydrationWarning>
-  //       <body>
-  //         <AdminHeader />
-  //         {children}
-  //         <AdminNavbar />
-  //       </body>
-  //     </html>
-  //   );
-  // }
+  if (checkAdmin) { // Admin
+    return (
+      <html lang="en" suppressHydrationWarning>
+        <body>
+          <AdminHeader />
+          {children}
+          <AdminNavbar />
+        </body>
+      </html>
+    );
+  }
 
-  return (
+  // Only gets the user details if the person logged in is NOT an admin.
+  const userDetails = await getUserDetails(user.id);
+  console.log("User details:", userDetails);
+
+  return ( // User
     <html lang="en" suppressHydrationWarning>
       <body>
         <UserHeader />
