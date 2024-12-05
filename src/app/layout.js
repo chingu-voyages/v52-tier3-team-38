@@ -12,6 +12,7 @@ import UnauthenticatedLayout from "./components/UnauthenticatedLayout";
 import AdminLayout from "./components/AdminLayout";
 import UserLayout from "./components/UserLayout";
 import { createClient } from "../../utils/supabase/client";
+import AppProvider from "./AppProvider";
 
 const jsonLd = {
   title: "Solarize",
@@ -61,7 +62,11 @@ export default function RootLayout({ children }) {
             dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
           />
         </head>
+        <body>
+        <AppProvider>
         <UnauthenticatedLayout>{children}</UnauthenticatedLayout>
+        </AppProvider>
+        </body>
       </html>
     );
   }
@@ -76,11 +81,15 @@ export default function RootLayout({ children }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
+      <body>
+      <AppProvider>
       {checkAdmin ? (
         <AdminLayout>{children}</AdminLayout>
       ) : (
         <UserLayout>{children}</UserLayout>
       )}
+      </AppProvider>
+      </body>
     </html>
   );
 }
