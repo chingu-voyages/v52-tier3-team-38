@@ -1,5 +1,5 @@
 import { setSession, clearSession } from "../slices/authSlice";
-import { createClient } from "../../utils/supabase/client";
+import { createClient } from "../../../utils/supabase/client";
 
 export const authMiddleware = (store) => {
   let supabase;

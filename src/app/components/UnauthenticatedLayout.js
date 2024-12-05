@@ -1,7 +1,7 @@
 import UnauthHeader from "./UnauthHeader";
 import UnauthNavbar from "./UnauthNavbar";
 
-const UnauthenticatedLayout = () => {
+const UnauthenticatedLayout = ({ children }) => {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>

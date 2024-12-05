@@ -2,7 +2,7 @@ import UserHeader from "./UserHeader";
 import UserNavbar from "./UserNavbar";
 
 
-const UserLayout = () => {
+const UserLayout = ({ children }) => {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>

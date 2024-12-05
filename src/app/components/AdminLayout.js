@@ -1,7 +1,7 @@
 import AdminHeader from "./AdminHeader";
 import AdminNavbar from "./AdminNavbar";
 
-const AdminLayout = () => {
+const AdminLayout = ({ children }) => {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>

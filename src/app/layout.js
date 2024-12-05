@@ -12,7 +12,7 @@ import UnauthenticatedLayout from "./components/UnauthenticatedLayout";
 import AdminLayout from "./components/AdminLayout";
 import UserLayout from "./components/UserLayout";
 import { createClient } from "../../utils/supabase/client";
-import AppProvider from "./AppProvider";
+import AppProvider from "./AppProvider"; // Import AppProvider
 
 const jsonLd = {
   title: "Solarize",
@@ -20,6 +20,14 @@ const jsonLd = {
 };
 
 export default function RootLayout({ children }) {
+  return (
+    <AppProvider>
+      <RootComponent>{children}</RootComponent>
+    </AppProvider>
+  );
+}
+
+function RootComponent({ children }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
 
@@ -63,9 +71,7 @@ export default function RootLayout({ children }) {
           />
         </head>
         <body>
-        <AppProvider>
-        <UnauthenticatedLayout>{children}</UnauthenticatedLayout>
-        </AppProvider>
+          <UnauthenticatedLayout>{children}</UnauthenticatedLayout>
         </body>
       </html>
     );
@@ -82,17 +88,116 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
-      <AppProvider>
-      {checkAdmin ? (
-        <AdminLayout>{children}</AdminLayout>
-      ) : (
-        <UserLayout>{children}</UserLayout>
-      )}
-      </AppProvider>
+        {checkAdmin ? (
+          <AdminLayout>{children}</AdminLayout>
+        ) : (
+          <UserLayout>{children}</UserLayout>
+        )}
       </body>
     </html>
   );
 }
+
+
+
+
+
+
+// "use client";
+
+// import "./globals.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
+
+// import { useEffect } from "react";
+// import { useSelector, useDispatch } from "react-redux";
+// import { setSession, clearSession } from "../redux/slices/authSlice";
+// import { useGetUserByIdQuery } from "../redux/slices/usersApiSlice";
+// import { isAdmin } from "../../utils/supabase/isAdmin";
+// import UnauthenticatedLayout from "./components/UnauthenticatedLayout";
+// import AdminLayout from "./components/AdminLayout";
+// import UserLayout from "./components/UserLayout";
+// import { createClient } from "../../utils/supabase/client";
+// import AppProvider from "./AppProvider";
+
+// const jsonLd = {
+//   title: "Solarize",
+//   description: "Developed by Gary Smith, Ross Clettenberg, and Mike Duffey",
+// };
+
+// export default function RootLayout({ children }) {
+//   const dispatch = useDispatch();
+//   const { user } = useSelector((state) => state.auth);
+
+//   const { data: userDetails, isLoading } = useGetUserByIdQuery(user?.id, {
+//     skip: !user,
+//   });
+
+//   useEffect(() => {
+//     const supabase = createClient();
+
+//     const checkAuth = async () => {
+//       const {
+//         data: { user },
+//       } = await supabase.auth.getUser();
+
+//       if (user) {
+//         dispatch(setSession({ user, session: user.session }));
+//       } else {
+//         dispatch(clearSession());
+//       }
+
+//       supabase.auth.onAuthStateChange((event, session) => {
+//         if (event === "SIGNED_IN") {
+//           dispatch(setSession({ user: session.user, session }));
+//         } else if (event === "SIGNED_OUT") {
+//           dispatch(clearSession());
+//         }
+//       });
+//     };
+
+//     checkAuth();
+//   }, [dispatch]);
+
+//   if (isLoading || !user) {
+//     return (
+//       <html lang="en" suppressHydrationWarning>
+//         <head>
+//           <script
+//             type="application/ld+json"
+//             dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+//           />
+//         </head>
+//         <body>
+//         <AppProvider>
+//         <UnauthenticatedLayout>{children}</UnauthenticatedLayout>
+//         </AppProvider>
+//         </body>
+//       </html>
+//     );
+//   }
+
+//   const checkAdmin = isAdmin(user.email);
+
+//   return (
+//     <html lang="en" suppressHydrationWarning>
+//       <head>
+//         <script
+//           type="application/ld+json"
+//           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+//         />
+//       </head>
+//       <body>
+//       <AppProvider>
+//       {checkAdmin ? (
+//         <AdminLayout>{children}</AdminLayout>
+//       ) : (
+//         <UserLayout>{children}</UserLayout>
+//       )}
+//       </AppProvider>
+//       </body>
+//     </html>
+//   );
+// }
 
 
 
