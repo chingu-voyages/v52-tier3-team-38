@@ -5,19 +5,24 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setSession, clearSession } from "../../redux/slices/authSlice";
-import { useGetUserByIdQuery } from "../../redux/slices/usersApiSlice";
+import { setSession, clearSession } from "../redux/slices/authSlice";
+import { useGetUserByIdQuery } from "../redux/slices/usersApiSlice";
 import { isAdmin } from "../../utils/supabase/isAdmin";
 import UnauthenticatedLayout from "./components/UnauthenticatedLayout";
 import AdminLayout from "./components/AdminLayout";
 import UserLayout from "./components/UserLayout";
 
-export const metadata = {
+const jsonLd = {
   title: "Solarize",
   description: "Developed by Gary Smith, Ross Clettenberg, and Mike Duffey",
 };
 
 export default function RootLayout({ children }) {
+
+<script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 const dispatch = useDispatch();
   const { user, session } = useSelector((state) => state.auth);
 

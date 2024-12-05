@@ -37,10 +37,10 @@ export default function Root() {
           console.log("User initialized:", { user, details });
         }
 
-        setUser(user); //set user regardless if admin or not.  
+        setUser(user); //set user regardless if admin or not. 
         setAdmin(checkAdmin)
       }
-       
+
       else {
         setUser(null);
         setUserDetails(null);
