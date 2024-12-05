@@ -11,10 +11,9 @@ import { isAdmin } from "../../utils/supabase/isAdmin";
 import UnauthenticatedLayout from "./components/UnauthenticatedLayout";
 import AdminLayout from "./components/AdminLayout";
 import UserLayout from "./components/UserLayout";
+import store from "../redux/store";
 
-import { Provider } from 'react-redux'
-
-const preloadedState = window.__PRELOADED_STATE__
+import { Provider } from "react-redux";
 
 const jsonLd = {
   title: "Solarize",
