@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setSession, clearSession } from "../../redux/slices/authSlice";
 import { useGetUserByIdQuery } from "../../redux/slices/usersApiSlice";
+import { isAdmin } from "../../utils/supabase/isAdmin";
 import UnauthenticatedLayout from "./components/UnauthenticatedLayout";
 import AdminLayout from "./components/AdminLayout";
 import UserLayout from "./components/UserLayout";
@@ -17,7 +18,7 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const dispatch = useDispatch();
+const dispatch = useDispatch();
   const { user, session } = useSelector((state) => state.auth);
 
   const { data: userDetails, isLoading } = useGetUserByIdQuery(user?.id, {
@@ -54,9 +55,23 @@ export default function RootLayout({ children }) {
     return <UnauthenticatedLayout>{children}</UnauthenticatedLayout>;
   }
 
-  if (userDetails?.role === 1) {
-    return <AdminLayout>{children}</AdminLayout>;
+ const checkAdmin = isAdmin(user.email);
+
+  if (checkAdmin) { // Admin
+    return (
+      <html lang="en" suppressHydrationWarning>
+        <body>
+          <AdminLayout>{children}</AdminLayout>;
+        </body>
+      </html>
+    );
   }
 
-  return <UserLayout>{children}</UserLayout>;
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <UserLayout>{children}</UserLayout>
+      </body>
+    </html>
+  );
 }
