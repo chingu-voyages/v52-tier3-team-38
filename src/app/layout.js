@@ -12,6 +12,10 @@ import UnauthenticatedLayout from "./components/UnauthenticatedLayout";
 import AdminLayout from "./components/AdminLayout";
 import UserLayout from "./components/UserLayout";
 
+import { Provider } from 'react-redux'
+
+const preloadedState = window.__PRELOADED_STATE__
+
 const jsonLd = {
   title: "Solarize",
   description: "Developed by Gary Smith, Ross Clettenberg, and Mike Duffey",
@@ -57,7 +61,13 @@ const dispatch = useDispatch();
   }, [dispatch]);
 
   if (isLoading || !user) {
-    return <UnauthenticatedLayout>{children}</UnauthenticatedLayout>;
+    return (
+    <html lang="en" suppressHydrationWarning>
+    <Provider store={store}>
+    <UnauthenticatedLayout>{children}</UnauthenticatedLayout>;
+    </Provider>
+  </html>
+    );
   }
 
  const checkAdmin = isAdmin(user.email);
@@ -65,18 +75,18 @@ const dispatch = useDispatch();
   if (checkAdmin) { // Admin
     return (
       <html lang="en" suppressHydrationWarning>
-        <body>
-          <AdminLayout>{children}</AdminLayout>;
-        </body>
+      <Provider store={store}>
+          <AdminLayout>{children}</AdminLayout>
+      </Provider>
       </html>
     );
   }
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+    <Provider store={store}>
         <UserLayout>{children}</UserLayout>
-      </body>
+    </Provider>
     </html>
   );
 }
