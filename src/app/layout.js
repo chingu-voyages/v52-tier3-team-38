@@ -48,7 +48,6 @@ export default async function RootLayout({ children }) {
     );
   }
 
-  // Only gets the user details if the person logged in is NOT an admin.
   const userDetails = await getUserDetails(user.id);
   console.log("User details:", userDetails);
 

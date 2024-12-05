@@ -6,6 +6,7 @@ import GuestHome from "./GuestHome";
 
 import { getUserDetails } from "../../utils/supabase/getUserDetails";
 import { createClient } from "../../utils/supabase/client";
+import { isAdmin } from "../../utils/supabase/isAdmin";
 
 import { useEffect, useState } from "react";
 
@@ -13,6 +14,7 @@ export default function Root() {
   const [user, setUser] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [admin, setAdmin] = useState(null);
 
   useEffect(() => {
     let supabase;
@@ -27,11 +29,19 @@ export default function Root() {
       } = await supabase.auth.getUser();
 
       if (user) {
-        const details = await getUserDetails(user.id);
-        setUser(user);
-        setUserDetails(details);
-        console.log("User initialized:", { user, details });
-      } else {
+        const checkAdmin = await isAdmin(user.email);
+
+        if (!checkAdmin) {
+          const details = await getUserDetails(user.id);
+          setUserDetails(details);
+          console.log("User initialized:", { user, details });
+        }
+
+        setUser(user); //set user regardless if admin or not.  
+        setAdmin(checkAdmin)
+      }
+       
+      else {
         setUser(null);
         setUserDetails(null);
         console.log("No user logged in initially.");
@@ -45,10 +55,16 @@ export default function Root() {
 
           if (event === "SIGNED_IN") {
             if (session?.user) {
-              const details = await getUserDetails(session.user.id);
+              const checkAdmin = await isAdmin(session.user.email)
+              setAdmin(checkAdmin)
+
+              if (!admin) {
+                const details = await getUserDetails(session.user.id);
+                setUserDetails(details);
+                console.log("User signed in:", { session, details });
+              }
+              
               setUser(session.user);
-              setUserDetails(details);
-              console.log("User signed in:", { session, details });
             }
           } else if (event === "SIGNED_OUT") {
             setUser(null);
@@ -80,5 +96,5 @@ export default function Root() {
     return <GuestHome />;
   }
 
-  return userDetails?.role === 1 ? <AdminPage /> : <UserPage />;
+  return admin ? <AdminPage /> : <UserPage />;
 }
