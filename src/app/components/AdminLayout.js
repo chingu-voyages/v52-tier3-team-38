@@ -1,7 +1,14 @@
+import { RedirectType } from "next/navigation";
 import AdminHeader from "./AdminHeader";
 import AdminNavbar from "./AdminNavbar";
+import { useSelector } from "react-redux";
 
 const AdminLayout = ({ children }) => {
+   const { user } = useSelector((state) => state.auth);
+
+    if (!user || !user.isAdmin) {
+    return <RedirectType to="/login" />;
+  }
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
