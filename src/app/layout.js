@@ -21,7 +21,13 @@ const jsonLd = {
 
 export default function RootLayout({ children }) {
   return (
-     <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body>
         <AppProvider>
           <RootComponent>{children}</RootComponent>
@@ -35,6 +41,7 @@ function RootComponent({ children }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const [isAdminUser, setIsAdminUser] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { data: userDetails, isLoading: isUserDetailsLoading } = useGetUserByIdQuery(user?.id, {
     skip: !user,
@@ -53,8 +60,8 @@ function RootComponent({ children }) {
         const adminStatus = await isAdmin(user.email);
         setIsAdminUser(adminStatus);
 
-        dispatch(setSession({ 
-          user, 
+        dispatch(setSession({
+          user,
           session: user.session,
           role: adminStatus ? 'admin' : 'user'
         }));
@@ -67,8 +74,8 @@ function RootComponent({ children }) {
           const adminStatus = await isAdmin(session.user.email);
           setIsAdminUser(adminStatus);
 
-          dispatch(setSession({ 
-            user: session.user, 
+          dispatch(setSession({
+            user: session.user,
             session,
             role: adminStatus ? 'admin' : 'user'
           }));
@@ -77,45 +84,23 @@ function RootComponent({ children }) {
           setIsAdminUser(false);
         }
       });
+
+      setIsLoading(false);
     };
 
     checkAuth();
   }, [dispatch]);
 
-  if (isUserDetailsLoading || !user) {
-    return (
-      <html lang="en" suppressHydrationWarning>
-        <head>
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-          />
-        </head>
-        <body>
-          <UnauthenticatedLayout>{children}</UnauthenticatedLayout>
-        </body>
-      </html>
-    );
+  if (isLoading || isUserDetailsLoading) {
+    return <UnauthenticatedLayout>{children}</UnauthenticatedLayout>;
   }
 
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      </head>
-      <body>
-        {isAdminUser ? (
-          <AdminLayout>{children}</AdminLayout>
-        ) : (
-          <UserLayout>{children}</UserLayout>
-        )}
-      </body>
-    </html>
-  );
+  return isAdminUser ?
+    <AdminLayout>{children}</AdminLayout> :
+    <UserLayout>{children}</UserLayout>;
 }
+
+
 
 
 // "use client";
