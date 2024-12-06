@@ -3,7 +3,7 @@
 import "./globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setSession, clearSession } from "../redux/slices/authSlice";
 import { useGetUserByIdQuery } from "../redux/slices/usersApiSlice";
@@ -12,7 +12,7 @@ import UnauthenticatedLayout from "./components/UnauthenticatedLayout";
 import AdminLayout from "./components/AdminLayout";
 import UserLayout from "./components/UserLayout";
 import { createClient } from "../../utils/supabase/client";
-import AppProvider from "./AppProvider"; // Import AppProvider
+import AppProvider from "./AppProvider";
 
 const jsonLd = {
   title: "Solarize",
@@ -34,8 +34,9 @@ export default function RootLayout({ children }) {
 function RootComponent({ children }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const [isAdminUser, setIsAdminUser] = useState(false);
 
-  const { data: userDetails, isLoading } = useGetUserByIdQuery(user?.id, {
+  const { data: userDetails, isLoading: isUserDetailsLoading } = useGetUserByIdQuery(user?.id, {
     skip: !user,
   });
 
@@ -48,16 +49,32 @@ function RootComponent({ children }) {
       } = await supabase.auth.getUser();
 
       if (user) {
-        dispatch(setSession({ user, session: user.session }));
+        // Check if user is an admin
+        const adminStatus = await isAdmin(user.email);
+        setIsAdminUser(adminStatus);
+
+        dispatch(setSession({ 
+          user, 
+          session: user.session,
+          role: adminStatus ? 'admin' : 'user'
+        }));
       } else {
         dispatch(clearSession());
       }
 
-      supabase.auth.onAuthStateChange((event, session) => {
+      supabase.auth.onAuthStateChange(async (event, session) => {
         if (event === "SIGNED_IN") {
-          dispatch(setSession({ user: session.user, session }));
+          const adminStatus = await isAdmin(session.user.email);
+          setIsAdminUser(adminStatus);
+
+          dispatch(setSession({ 
+            user: session.user, 
+            session,
+            role: adminStatus ? 'admin' : 'user'
+          }));
         } else if (event === "SIGNED_OUT") {
           dispatch(clearSession());
+          setIsAdminUser(false);
         }
       });
     };
@@ -65,7 +82,7 @@ function RootComponent({ children }) {
     checkAuth();
   }, [dispatch]);
 
-  if (isLoading || !user) {
+  if (isUserDetailsLoading || !user) {
     return (
       <html lang="en" suppressHydrationWarning>
         <head>
@@ -81,8 +98,6 @@ function RootComponent({ children }) {
     );
   }
 
-  const checkAdmin = isAdmin(user.email);
-
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -92,7 +107,7 @@ function RootComponent({ children }) {
         />
       </head>
       <body>
-        {checkAdmin ? (
+        {isAdminUser ? (
           <AdminLayout>{children}</AdminLayout>
         ) : (
           <UserLayout>{children}</UserLayout>
@@ -101,10 +116,6 @@ function RootComponent({ children }) {
     </html>
   );
 }
-
-
-
-
 
 
 // "use client";
