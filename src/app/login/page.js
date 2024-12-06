@@ -18,8 +18,8 @@ const formData = new FormData(event.target);
 
   const response = await login(formData);
 
-    if (response.error) {
-      console.error("Error:", response.error);
+    if (response?.error) {
+      console.error("Login Error:", response.error);
       setError(response.error.message || "An error occurred. Please try again.");
     }
 
