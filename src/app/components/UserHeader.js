@@ -3,23 +3,25 @@
 import { Button } from "react-bootstrap";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { createClient } from "../../../utils/supabase/client";
 
 const UserHeader = () => {
-
   const router = useRouter();
 
   const handleLogout = async () => {
-    await clientLogout(router); // Call the client-side logout logic
+    const supabase = await createClient();
+    await supabase.auth.signOut();
+    router.push('/');
   };
 
   return (
     <>
-    <div>Header</div>
-    <Link href="/"><h1>Solarize</h1></Link>
-    <h3>Logged in as resident!</h3>
-    <Button variant="danger" onClick={handleLogout}>Log Out</Button>
+      <div>Header</div>
+      <Link href="/"><h1>Solarize</h1></Link>
+      <h3>Logged in as resident!</h3>
+      <Button variant="danger" onClick={handleLogout}>Log Out</Button>
     </>
   )
 }
 
-export default UserHeader
+export default UserHeader;
