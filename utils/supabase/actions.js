@@ -13,8 +13,13 @@ export async function login(formData) {
 
   const { error } = await supabase.auth.signInWithPassword(credentials)
 
-  if (error) {
-    return { error }
+ if (error) {
+    return {
+      error: {
+        message: error.message,
+        status: error.status
+      }
+    }
   }
 
   revalidatePath('/', 'layout')

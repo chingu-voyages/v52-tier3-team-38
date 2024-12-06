@@ -15,7 +15,7 @@ const authSlice = createSlice({
       state.session = session;
     },
     clearSession: (state) => {
-      state.userInfo = null;
+      state.user = null;
       state.session = null;
     },
   },
