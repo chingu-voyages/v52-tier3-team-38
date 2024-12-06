@@ -2,7 +2,6 @@
 
 import { Button } from "react-bootstrap";
 import { useRouter } from "next/navigation";
-import { clientLogout } from "../../../utils/supabase/client-logout";
 import Link from "next/link";
 
 const UserHeader = () => {
