@@ -21,9 +21,13 @@ const jsonLd = {
 
 export default function RootLayout({ children }) {
   return (
-    <AppProvider>
-      <RootComponent>{children}</RootComponent>
-    </AppProvider>
+     <html lang="en">
+      <body>
+        <AppProvider>
+          <RootComponent>{children}</RootComponent>
+        </AppProvider>
+      </body>
+    </html>
   );
 }
 
