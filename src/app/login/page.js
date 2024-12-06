@@ -14,7 +14,10 @@ const Login = () => {
     setLoading(true);
     setError("");
 
-const formData = new FormData(event.target);
+const formData = new FormData();
+ formData.append("email", inputEmail);
+  formData.append("password", inputPassword);
+
 
   const response = await login(formData);
 
