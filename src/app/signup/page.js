@@ -2,7 +2,10 @@
 
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
-import { signup } from "../../../utils/supabase/actions";
+import { createClient } from "../../../utils/supabase/client";
+import { useDispatch } from "react-redux";
+import { setSession } from "../../redux/slices/authSlice";
+import { useRouter } from "next/navigation";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +17,8 @@ const Signup = () => {
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,13 +30,47 @@ const Signup = () => {
     setLoading(true);
     setError(null);
 
-    const response = await signup(formData);
+    try {
+      const supabase = await createClient();
 
-    if (response.error) {
-      setError(response.error.message || "An error occurred. Please try again.");
+      // Sign up the user
+      const { data, error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (error) throw error;
+
+      // If signup is successful, insert additional user details
+      if (data.user) {
+        const { error: insertError } = await supabase.from('user_details').insert({
+          id: data.user.id,
+          name: formData.name,
+          address: formData.address,
+          phone_number: formData.phoneNumber,
+        });
+
+        if (insertError) throw insertError;
+
+        // Get the current session
+        const { data: sessionData } = await supabase.auth.getSession();
+
+        // Dispatch session to Redux store
+        if (sessionData.session) {
+          dispatch(setSession({
+            user: sessionData.session.user,
+            session: sessionData.session
+          }));
+        }
+
+        // Redirect to home page
+        router.push('/');
+      }
+    } catch (catchedError) {
+      setError(catchedError.message || "An error occurred during signup");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   const handlePassword = () => {
@@ -103,9 +142,6 @@ const Signup = () => {
 };
 
 export default Signup;
-
-
-
 
 
 // "use client";
