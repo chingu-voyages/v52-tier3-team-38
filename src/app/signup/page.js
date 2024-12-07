@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState, useRef } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { signup } from "../../../utils/supabase/actions";
 
@@ -10,7 +10,8 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [suggestions, setSuggestions] = useState([])
+  const [suggestions, setSuggestions] = useState([]);
+  const timeoutRef = useRef();
 
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -35,22 +36,37 @@ const Signup = () => {
     setLoading(false);
   };
 
-    const getSuggestions = async (input) => {
-        if (!input) {
-          setSuggestions([])
-          return;
-        }
-
-        const response = await fetch('/api/addressSuggestions', {
-          query: JSON.stringify(input)
-        })
-
-        console.log(response.data)
-
-        if (response.data) {
-          setSuggestions(response.data)
-        }
+  const onAddressChange = (userInput) => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
     }
+
+    timeoutRef.current = setTimeout(() => {
+      getSuggestions(userInput);
+    }, 500)
+  }
+
+  const getSuggestions = async (input) => {
+    if (!input) {
+        setSuggestions([])
+        return;
+    }
+
+    console.log(input)
+
+    const response = await fetch('/api/addressSuggestions', {
+      method: "POST",
+      body: JSON.stringify({query: input})
+    })
+
+    const addresses = await response.json()
+
+    console.log(addresses)
+
+    // if (response.data) {
+    //   setSuggestions(response.data)
+    // }
+  }
   return (
     <div
       className="sign-up__wrapper"
@@ -61,7 +77,7 @@ const Signup = () => {
       <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}>
         {/* Header */}
         <div className="h4 mb-2 text-center">Sign Up</div>
-        {/* ALert */}
+        {/* Alert */}
         {error ? (
           <Alert
             className="mb-2"
@@ -116,7 +132,7 @@ const Signup = () => {
             placeholder="Address"
             onChange={(e) => {
               setAddress(e.target.value)
-              getSuggestions(e.target.value)
+              onAddressChange(e.target.value)
             }
               }
             required
@@ -152,7 +168,6 @@ const Signup = () => {
           <Button
             className="text-muted px-0"
             variant="link"
-            onClick={handlePassword}
           >
             Forgot password?
           </Button>

@@ -8,8 +8,6 @@ export const POST = async(request) => {
     // user input  ex; 1508 Greenwood Ave, we really only care about the streetname and address
     const addressInfo = query.split(" ")
 
-    console.log(addressInfo)
-
     const addressNumber = addressInfo[0] * 1 || null
     const addressName = addressInfo[1] || null
 
@@ -27,8 +25,8 @@ export const POST = async(request) => {
   // },
 
     // Putting together the addresses 
-    const addressData = data.map(dataRow => {
-      const {hse_nbr, str_nm, str_sfx_cd, zip_cd, lat, lon} = dataRow
+    const addressData = data.map(addressRow => {
+      const {hse_nbr, str_nm, str_sfx_cd, zip_cd, lat, lon} = addressRow
       const address = `${hse_nbr} ${str_nm} ${str_sfx_cd} ${zip_cd}`
       return {address: address, coordinates: {lat, lon}}
     })
@@ -36,6 +34,6 @@ export const POST = async(request) => {
     return NextResponse.json({addressData})
 
   } catch (error) {
-    return NextResponse.json({error})
+    return NextResponse.json({errorMessage: 'Something went wrong', error}, {status: 400})
   }
 }
