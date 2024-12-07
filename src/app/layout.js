@@ -39,8 +39,7 @@ export default function RootLayout({ children }) {
 
 function RootComponent({ children }) {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
-  const [isAdminUser, setIsAdminUser] = useState(false);
+  const { user, role } = useSelector((state) => state.auth);
   const [isLoading, setIsLoading] = useState(true);
 
   const { data: userDetails, isLoading: isUserDetailsLoading } = useGetUserByIdQuery(user?.id, {
@@ -58,12 +57,10 @@ function RootComponent({ children }) {
       if (user) {
         // Check if user is an admin
         const adminStatus = await isAdmin(user.email);
-        setIsAdminUser(adminStatus);
-
         dispatch(setSession({
           user,
           session: user.session,
-          role: adminStatus ? 'admin' : 'user'
+          role: adminStatus ? 'admin' : 'user',
         }));
       } else {
         dispatch(clearSession());
@@ -72,16 +69,13 @@ function RootComponent({ children }) {
       supabase.auth.onAuthStateChange(async (event, session) => {
         if (event === "SIGNED_IN") {
           const adminStatus = await isAdmin(session.user.email);
-          setIsAdminUser(adminStatus);
-
           dispatch(setSession({
             user: session.user,
             session,
-            role: adminStatus ? 'admin' : 'user'
+            role: adminStatus ? 'admin' : 'user',
           }));
         } else if (event === "SIGNED_OUT") {
           dispatch(clearSession());
-          setIsAdminUser(false);
         }
       });
 
@@ -95,12 +89,17 @@ function RootComponent({ children }) {
     return <UnauthenticatedLayout>{children}</UnauthenticatedLayout>;
   }
 
-  return isAdminUser ?
-    <AdminLayout>{children}</AdminLayout> :
-    <UserLayout>{children}</UserLayout>;
+  // Render the layout based on the user's role
+  if (role === 'admin') {
+    return <AdminLayout>{children}</AdminLayout>;
+  }
+
+  if (role === 'user') {
+    return <UserLayout>{children}</UserLayout>;
+  }
+
+  return <UnauthenticatedLayout>{children}</UnauthenticatedLayout>;
 }
-
-
 
 
 // "use client";

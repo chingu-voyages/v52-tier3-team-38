@@ -6,13 +6,11 @@ const UnauthenticatedLayout = ({ children }) => {
   const { user } = useSelector((state) => state.auth);
 
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body>
+    <main>
         <UnauthHeader />
         {children}
         <UnauthNavbar />
-      </body>
-    </html>
+    </main>
   );
 }
 

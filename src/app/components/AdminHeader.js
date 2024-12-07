@@ -3,16 +3,24 @@
 import { Button } from "react-bootstrap";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "../../../utils/supabase/client";
+import { logout } from "../../../utils/supabase/actions";
+import { clearSession } from "@/redux/slices/authSlice";
+import { useDispatch } from "react-redux";
 
 const AdminHeader = () => {
+  const dispatch = useDispatch();
   const router = useRouter();
 
-  const handleLogout = async () => {
-    const supabase = await createClient();
-    await supabase.auth.signOut();
-    router.push('/');
-  };
+const handleLogout = async () => {
+  const { error } = await logout();  // Call the logout function
+
+  if (error) {
+    console.log("Error during logout:", error.message);
+  } else {
+    dispatch(clearSession());  // Reset the user state
+    router.push("/");  // Ensure you redirect after successful logout
+  }
+};
 
   return (
     <>

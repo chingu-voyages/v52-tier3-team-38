@@ -10,7 +10,7 @@ const UnauthNavbar = () => {
 
   return (
     <Nav fill variant="pills" defaultActiveKey={"/admin/_id/profile"}>
-    <div>Resident Navbar</div>
+    <div>Unauthenticated Navbar</div>
     <Nav.Item>
       <Nav.Link href="/signup">Sign Up</Nav.Link>
     </Nav.Item>

@@ -14,12 +14,13 @@ export const usersApiSlice = supabaseApiSlice.injectEndpoints({
           if (error) throw error;
           return { data };
         } catch (error) {
+          console.error("Error fetching users:", error.message);
           return { error: { status: 500, data: error.message } };
         }
       },
       providesTags: ["User"],
     }),
-    
+
     getUserById: builder.query({
       queryFn: async (id) => {
         const supabase = await createClient();
@@ -29,10 +30,11 @@ export const usersApiSlice = supabaseApiSlice.injectEndpoints({
             .select("*")
             .eq("id", id)
             .single();
-           
+
           if (error) throw error;
           return { data };
         } catch (error) {
+          console.error(`Error fetching user with id ${id}:`, error.message);
           return { error: { status: 404, data: error.message } };
         }
       },

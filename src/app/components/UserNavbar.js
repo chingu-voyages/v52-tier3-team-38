@@ -12,7 +12,7 @@ const UserNavbar = () => {
 
   return (
     <Nav fill variant="pills" defaultActiveKey={"/user/_id/profile"}>
-    <div>Navbar</div>
+    <div>Resident Navbar</div>
     <Nav.Item>
       <Nav.Link href="/user/_id/profile">Profile</Nav.Link>
     </Nav.Item>

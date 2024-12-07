@@ -1,10 +1,8 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { getUserDetails } from "../../utils/supabase/getUserDetails";
-import { createClient } from "../../utils/supabase/client";
-import { isAdmin } from "../../utils/supabase/isAdmin";
+import dynamic from "next/dynamic";
+import initializeAuth from "../../utils/initializeAuth";
 
 const GuestHome = dynamic(() => import("./GuestHome"));
 const UserPage = dynamic(() => import("./user/[_id]/profile/page"));
@@ -17,44 +15,14 @@ export default function Root() {
   const [admin, setAdmin] = useState(false);
 
   useEffect(() => {
-    const supabase = createClient();
-
-    const initializeAuth = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (user) {
-        setAdmin(await isAdmin(user.email));
-
-        if (!admin) {
-          setUserDetails(await getUserDetails(user.id));
-        }
-      }
-      setUser(user);
-      setLoading(false);
-
-      supabase.auth.onAuthStateChange(async (event, session) => {
-        if (event === "SIGNED_IN" && session?.user) {
-          setAdmin(await isAdmin(session.user.email));
-          setUser(session.user);
-          if (!admin) {
-            setUserDetails(await getUserDetails(session.user.id));
-          }
-        } else if (event === "SIGNED_OUT") {
-          setUser(null);
-          setUserDetails(null);
-        }
-      });
-    };
-
-    initializeAuth();
-  }, [admin]);
+    initializeAuth(setUser, setUserDetails, setAdmin, setLoading);
+  }, []);
 
   if (loading) return <div>Loading...</div>;
   if (!user) return <GuestHome />;
   return admin ? <AdminPage /> : <UserPage />;
 }
+
 
 
 // "use client";
