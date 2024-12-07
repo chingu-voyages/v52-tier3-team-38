@@ -17,9 +17,23 @@ export const POST = async(request) => {
 
     const data = await response.json();
 
-    // Putting together the addresses 
+  //   {
+  //     "hse_nbr": "1769",
+  //     "str_nm": "IVAR",
+  //     "str_sfx_cd": "AVE",
+  //     "zip_cd": "90028",
+  //     "lat": "34.10369",
+  //     "lon": "-118.32831"
+  // },
 
-    return NextResponse.json({addresses: data})
+    // Putting together the addresses 
+    const addressData = data.map(dataRow => {
+      const {hse_nbr, str_nm, str_sfx_cd, zip_cd, lat, lon} = dataRow
+      const address = `${hse_nbr} ${str_nm} ${str_sfx_cd} ${zip_cd}`
+      return {address: address, coordinates: {lat, lon}}
+    })
+
+    return NextResponse.json({addressData})
 
   } catch (error) {
     return NextResponse.json({error})
