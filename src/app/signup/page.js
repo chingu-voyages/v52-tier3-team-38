@@ -42,7 +42,7 @@ const Signup = () => {
         }
 
         const response = await fetch('/api/addressSuggestions', {
-          body: JSON.stringify(input)
+          query: JSON.stringify(input)
         })
 
         console.log(response.data)
