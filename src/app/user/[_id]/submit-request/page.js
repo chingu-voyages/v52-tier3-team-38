@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Form, Button, Container, Alert } from "react-bootstrap";
 import { useParams } from "next/navigation";
+import AddressFormSection from "@/app/components/AddressFormSection";
 
 const AppointmentForm = () => {
   const [name, setName] = useState("");
@@ -76,17 +77,7 @@ const AppointmentForm = () => {
           />
         </Form.Group>
 
-        {/* Can have this autofill to whatever the users name is */}
-        <Form.Group className="mb-3" controlId="address">
-          <Form.Label>Address</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter your address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            required
-          />
-        </Form.Group>
+        <AddressFormSection address={address} setAddress={setAddress}/>
 
         <Form.Group className="mb-3" controlId="appointmentDate">
           <Form.Label>Appointment Date</Form.Label>
