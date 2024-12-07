@@ -29,7 +29,7 @@ export const POST = async(request) => {
       return address
     })
 
-    return NextResponse.json({addressData})
+    return NextResponse.json(addressData)
 
   } catch (error) {
     return NextResponse.json({errorMessage: 'Something went wrong', error}, {status: 400})

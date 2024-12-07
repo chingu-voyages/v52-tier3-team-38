@@ -3,6 +3,7 @@
 import React, { useState, useRef } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { signup } from "../../../utils/supabase/actions";
+import AddressFormSection from "../components/AddressFormSection";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -10,9 +11,6 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
-  const timeoutRef = useRef();
-
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -36,37 +34,6 @@ const Signup = () => {
     setLoading(false);
   };
 
-  const onAddressChange = (userInput) => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-    }
-
-    timeoutRef.current = setTimeout(() => {
-      getSuggestions(userInput);
-    }, 500)
-  }
-
-  const getSuggestions = async (input) => {
-    if (!input) {
-        setSuggestions([])
-        return;
-    }
-
-    console.log(input)
-
-    const response = await fetch('/api/addressSuggestions', {
-      method: "POST",
-      body: JSON.stringify({query: input})
-    })
-
-    const addresses = await response.json()
-
-    console.log(addresses)
-
-    // if (response.data) {
-    //   setSuggestions(response.data)
-    // }
-  }
   return (
     <div
       className="sign-up__wrapper"
@@ -124,20 +91,7 @@ const Signup = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-2" controlId="Address">
-          <Form.Label>Address</Form.Label>
-          <Form.Control
-            type="text"
-            value={address}
-            placeholder="Address"
-            onChange={(e) => {
-              setAddress(e.target.value)
-              onAddressChange(e.target.value)
-            }
-              }
-            required
-          />
-        </Form.Group>
+        <AddressFormSection address={address} setAddress={setAddress}/>
 
         <Form.Group className="mb-2" controlId="phoneNumber">
           <Form.Label>Phone Number</Form.Label>
