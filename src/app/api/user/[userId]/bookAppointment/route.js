@@ -15,7 +15,6 @@ export const POST = async(request, { params }) => {
 
     const { data: user, error } = await supabase.from("user_details").select("*").eq("id", userId).single();
 
-
     if (error) return NextResponse.json({error: "A user with this id does not exist "}, {status: 404});
 
     if (user.role === 1) return NextResponse.json({error: "Admins cannot book appointments."}, {status: 403});

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { signup } from "../../../utils/supabase/actions";
 
@@ -10,6 +10,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [suggestions, setSuggestions] = useState([])
 
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -34,8 +35,22 @@ const Signup = () => {
     setLoading(false);
   };
 
-  const handlePassword = () => {}; // Will address later
+    const getSuggestions = async (input) => {
+        if (!input) {
+          setSuggestions([])
+          return;
+        }
 
+        const response = await fetch('/api/addressSuggestions', {
+          body: JSON.stringify(input)
+        })
+
+        console.log(response.data)
+
+        if (response.data) {
+          setSuggestions(response.data)
+        }
+    }
   return (
     <div
       className="sign-up__wrapper"
@@ -99,7 +114,11 @@ const Signup = () => {
             type="text"
             value={address}
             placeholder="Address"
-            onChange={(e) => setAddress(e.target.value)}
+            onChange={(e) => {
+              setAddress(e.target.value)
+              getSuggestions(e.target.value)
+            }
+              }
             required
           />
         </Form.Group>
