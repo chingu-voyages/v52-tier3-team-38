@@ -8,7 +8,7 @@ export const usersApiSlice = supabaseApiSlice.injectEndpoints({
         const supabase = await createClient();
         try {
           const { data, error } = await supabase
-            .from("users")
+            .from("user_details")
             .select("*");
 
           if (error) throw error;
@@ -26,7 +26,7 @@ export const usersApiSlice = supabaseApiSlice.injectEndpoints({
         const supabase = await createClient();
         try {
           const { data, error } = await supabase
-            .from("users")
+            .from("user_details")
             .select("*")
             .eq("id", id)
             .single();
