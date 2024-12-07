@@ -3,40 +3,74 @@ import { isAdmin } from "./supabase/isAdmin";
 import { getUserDetails } from "./supabase/getUserDetails";
 
 export default async function initializeAuth(setUser, setUserDetails, setAdmin, setLoading) {
-  const supabase = createClient();
+  try {
+    const supabase = createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    const {
+      data: { user },
+      error: userError
+    } = await supabase.auth.getUser();
 
-  if (user) {
-    const adminStatus = await isAdmin(user.email);
-    setAdmin(adminStatus);
-
-    if (!adminStatus) {
-      const details = await getUserDetails(user.id);
-      setUserDetails(details);
+    if (userError) {
+      console.error("Error getting user:", userError);
+      setLoading(false);
+      return;
     }
 
-    setUser(user);
-  }
+    if (user) {
+      try {
+        const adminStatus = await isAdmin(user.email);
+        setAdmin(adminStatus);
 
-  setLoading(false);
+        if (!adminStatus) {
+          try {
+            const details = await getUserDetails(user.id);
+            setUserDetails(details);
+          } catch (detailsError) {
+            console.error("Error getting user details:", detailsError);
+            setUserDetails(null);
+          }
+        }
 
-  supabase.auth.onAuthStateChange(async (event, session) => {
-    if (event === "SIGNED_IN" && session?.user) {
-      const adminStatus = await isAdmin(session.user.email);
-      setAdmin(adminStatus);
-      setUser(session.user);
-
-      if (!adminStatus) {
-        const details = await getUserDetails(session.user.id);
-        setUserDetails(details);
+        setUser(user);
+      } catch (adminCheckError) {
+        console.error("Error checking admin status:", adminCheckError);
+        setAdmin(false);
       }
-    } else if (event === "SIGNED_OUT") {
-      setUser(null);
-      setUserDetails(null);
-      setAdmin(false);
     }
-  });
+
+    setLoading(false);
+
+    supabase.auth.onAuthStateChange(async (event, session) => {
+      try {
+        if (event === "SIGNED_IN" && session?.user) {
+          const adminStatus = await isAdmin(session.user.email);
+          setAdmin(adminStatus);
+          setUser(session.user);
+
+          if (!adminStatus) {
+            try {
+              const details = await getUserDetails(session.user.id);
+              setUserDetails(details);
+            } catch (detailsError) {
+              console.error("Error getting user details on auth change:", detailsError);
+              setUserDetails(null);
+            }
+          }
+        } else if (event === "SIGNED_OUT") {
+          setUser(null);
+          setUserDetails(null);
+          setAdmin(false);
+        }
+      } catch (authStateError) {
+        console.error("Error in auth state change:", authStateError);
+        setUser(null);
+        setUserDetails(null);
+        setAdmin(false);
+      }
+    });
+  } catch (globalError) {
+    console.error("Unexpected error in initializeAuth:", globalError);
+    setLoading(false);
+  }
 }

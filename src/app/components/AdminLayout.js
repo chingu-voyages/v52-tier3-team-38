@@ -1,22 +1,26 @@
+"use client";
+
 import AdminHeader from "./AdminHeader";
 import AdminNavbar from "./AdminNavbar";
 import UnauthenticatedLayout from "./UnauthenticatedLayout";
 import { useSelector } from "react-redux";
 
 const AdminLayout = ({ children }) => {
-   const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
 
-    if (!user) {
-    return <UnauthenticatedLayout>{children}</UnauthenticatedLayout>; // Redirect or fallback
+  if (!user) {
+    return <UnauthenticatedLayout>{children}</UnauthenticatedLayout>;
   }
 
   return (
-    <main>
-        <AdminHeader />
+    <div className="d-flex flex-column min-vh-100">
+      <AdminHeader />
+      <main className="flex-grow-1">
         {children}
-        <AdminNavbar />
-    </main>
+      </main>
+      <AdminNavbar />
+    </div>
   );
-}
+};
 
-export default AdminLayout
+export default AdminLayout;

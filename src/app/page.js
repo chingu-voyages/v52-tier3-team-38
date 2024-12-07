@@ -3,125 +3,68 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import initializeAuth from "../../utils/initializeAuth";
+import { useDispatch } from "react-redux";
+import { setSession, clearSession } from "../redux/slices/authSlice";
 
-const GuestHome = dynamic(() => import("./GuestHome"));
-const UserPage = dynamic(() => import("./user/[_id]/profile/page"));
-const AdminPage = dynamic(() => import("./admin/[_id]/profile/page"));
+const GuestHome = dynamic(() => import("./GuestHome"), {
+  loading: () => <div>Loading GuestHome component...</div>
+});
+const UserPage = dynamic(() => import("./user/[id]/profile/page"), {
+  loading: () => <div>Loading UserPage component...</div>
+});
+const AdminPage = dynamic(() => import("./admin/[id]/profile/page"), {
+  loading: () => <div>Loading AdminPage component...</div>
+});
 
 export default function Root() {
   const [user, setUser] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [admin, setAdmin] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    initializeAuth(setUser, setUserDetails, setAdmin, setLoading);
+    console.log("Starting auth initialization...");
+    const initialize = async () => {
+      try {
+        await initializeAuth(
+          setUser,
+          setUserDetails,
+          setAdmin,
+          setLoading
+        );
+        console.log("Auth initialization complete");
+      } catch (error) {
+        console.error("Auth initialization error:", error);
+        setLoading(false);
+      }
+    };
+
+    initialize();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
-  if (!user) return <GuestHome />;
-  return admin ? <AdminPage /> : <UserPage />;
+  useEffect(() => {
+    console.log("User state changed:", { user, admin });
+    if (user) {
+      dispatch(setSession({
+        user,
+        role: admin ? 'admin' : 'user'
+      }));
+    } else {
+      dispatch(clearSession());
+    }
+  }, [user, admin, dispatch]);
+
+  console.log("Current state:", { loading, user, admin });
+
+  if (loading) return <div>Loading initial auth state...</div>;
+  if (!user) {
+    console.log("No user, rendering GuestHome");
+    return <GuestHome />;
+  }
+
+  console.log("Rendering user/admin page for user:", user.id);
+  return admin ?
+    <AdminPage params={{ id: user.id }} /> :
+    <UserPage params={{ id: user.id }} />;
 }
-
-
-
-// "use client";
-
-// import UserPage from "./user/[_id]/profile/page";
-// import AdminPage from "./admin/[_id]/profile/page";
-// import GuestHome from "./GuestHome";
-
-// import { getUserDetails } from "../../utils/supabase/getUserDetails";
-// import { createClient } from "../../utils/supabase/client";
-// import { isAdmin } from "../../utils/supabase/isAdmin";
-
-// import { useEffect, useState } from "react";
-
-// export default function Root() {
-//   const [user, setUser] = useState(null);
-//   const [userDetails, setUserDetails] = useState(null);
-//   const [loading, setLoading] = useState(true);
-//   const [admin, setAdmin] = useState(null);
-
-//   useEffect(() => {
-//     let supabase;
-//     let unsubscribe;
-
-//     const initializeSupabase = async () => {
-//       supabase = await createClient();
-
-//       // Fetch initial user
-//       const {
-//         data: { user },
-//       } = await supabase.auth.getUser();
-
-//       if (user) {
-//         const checkAdmin = await isAdmin(user.email);
-
-//         if (!checkAdmin) {
-//           const details = await getUserDetails(user.id);
-//           setUserDetails(details);
-//           console.log("User initialized:", { user, details });
-//         }
-
-//         setUser(user); //set user regardless if admin or not. 
-//         setAdmin(checkAdmin)
-//       }
-
-//       else {
-//         setUser(null);
-//         setUserDetails(null);
-//         console.log("No user logged in initially.");
-//       }
-//       setLoading(false);
-
-//       // Subscribe to auth changes
-//       const { data: subscription } = supabase.auth.onAuthStateChange(
-//         async (event, session) => {
-//           console.log("Auth state change detected:", event);
-
-//           if (event === "SIGNED_IN") {
-//             if (session?.user) {
-//               const checkAdmin = await isAdmin(session.user.email)
-//               setAdmin(checkAdmin)
-
-//               if (!admin) {
-//                 const details = await getUserDetails(session.user.id);
-//                 setUserDetails(details);
-//                 console.log("User signed in:", { session, details });
-//               }
-
-//               setUser(session.user);
-//             }
-//           } else if (event === "SIGNED_OUT") {
-//             setUser(null);
-//             setUserDetails(null);
-//             console.log("User signed out. State cleared.");
-//           }
-//         }
-//       );
-
-//       unsubscribe = subscription?.unsubscribe;
-//     };
-
-//     initializeSupabase();
-
-//     // Cleanup subscription on unmount
-//     return () => {
-//       if (unsubscribe) {
-//         console.log("Cleaning up auth subscription...");
-//         unsubscribe();
-//       }
-//     };
-//   }, [admin]);
-
-//   if (loading) {
-//     return <div>Loading...</div>;
-//   }
-
-//   if (!user) {
-//     return <GuestHome />;
-//   }
-
-//   return admin ? <AdminPage /> : <UserPage />;
-// }

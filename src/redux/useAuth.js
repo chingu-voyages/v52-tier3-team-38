@@ -19,9 +19,9 @@ const useAuth = () => {
       } = await supabase.auth.getSession();
 
       if (session?.user) {
-        dispatch(setSession({ 
-          user: session.user, 
-          session 
+        dispatch(setSession({
+          user: session.user,
+          session
         }));
       } else {
         dispatch(clearSession());
@@ -32,9 +32,9 @@ const useAuth = () => {
         switch (event) {
           case "SIGNED_IN":
             if (session?.user) {
-              dispatch(setSession({ 
-                user: session.user, 
-                session 
+              dispatch(setSession({
+                user: session.user,
+                session
               }));
             }
             break;
@@ -43,9 +43,9 @@ const useAuth = () => {
             break;
           case "TOKEN_REFRESHED":
             if (session?.user) {
-              dispatch(setSession({ 
-                user: session.user, 
-                session 
+              dispatch(setSession({
+                user: session.user,
+                session
               }));
             }
             break;

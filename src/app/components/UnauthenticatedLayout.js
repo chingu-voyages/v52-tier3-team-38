@@ -1,17 +1,18 @@
+"use client";
+
 import UnauthHeader from "./UnauthHeader";
 import UnauthNavbar from "./UnauthNavbar";
-import { useSelector } from "react-redux";
 
 const UnauthenticatedLayout = ({ children }) => {
-  const { user } = useSelector((state) => state.auth);
-
   return (
-    <main>
-        <UnauthHeader />
+    <div className="d-flex flex-column min-vh-100">
+      <UnauthHeader />
+      <main className="flex-grow-1">
         {children}
-        <UnauthNavbar />
-    </main>
+      </main>
+      <UnauthNavbar />
+    </div>
   );
-}
+};
 
-export default UnauthenticatedLayout
+export default UnauthenticatedLayout;

@@ -1,14 +1,30 @@
 import { createClient } from "./client";
 
-export const isAdmin = async (email) => { // Helper function to get user details of logged in user.
-  const supabase = await createClient();
-
-  const response = await supabase.from('approved_admin_emails').select('*').eq('email', email).single(); // checks if the email from the form is a approved admin
-
-  if (response.error) {
-    console.log('An error occured', response.error)
-    return false
+export async function isAdmin(email) {
+  if (!email) {
+    console.warn("No email provided for admin check");
+    return false;
   }
 
-  return true;
+  try {
+    const supabase = createClient();
+
+    // Use select without .single() to handle potential no-rows scenario
+    const { data, error } = await supabase
+      .from("approved_admin_emails")
+      .select("*")
+      .eq("email", email)
+      .maybeSingle(); // Use maybeSingle to handle zero or one rows
+
+    if (error) {
+      console.error("Admin check Supabase error:", error);
+      return false;
+    }
+
+    // Return true if data exists, false otherwise
+    return !!data;
+  } catch (catchError) {
+    console.error("Unexpected error in isAdmin:", catchError);
+    return false;
+  }
 }
