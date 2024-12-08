@@ -1,9 +1,7 @@
-import { createServerClient, cookieOptions } from "@supabase/ssr";
+import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-import dotenv from 'dotenv';
-dotenv.config();
 
-export async function createClient() { // Creates a server side client to give access to Supabase APIs and provides access to cookies.
+export async function createClient() {
   const cookieStore = await cookies();
 
   return createServerClient(
@@ -12,18 +10,18 @@ export async function createClient() { // Creates a server side client to give a
     {
       cookies: {
         getAll() {
-          return cookieStore.getAll()
+          return cookieStore.getAll().map(cookie => ({ name: cookie.name, value: cookie.value }));
         },
-        setAll(cookiesToSet) {
+        setAll(cookies) {
           try {
-            cookiesToSet.forEach(( {name, value, options} ) =>
-              cookieStore.set(name, value, options)
-            )
+            cookies.forEach(cookie => {
+              cookieStore.set(cookie);
+            });
           } catch {
-            //Middleware will handle this so this can be ignored. Atleast according to documentation anyway.
+            // Middleware will handle this
           }
         }
       }
     }
-  )
+  );
 }

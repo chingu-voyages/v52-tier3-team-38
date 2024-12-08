@@ -1,9 +1,13 @@
-"use client";
-
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { signup } from "../../../utils/supabase/actions";
+import { useDispatch } from "react-redux";
+import { setSession } from "../../redux/slices/authSlice";
+import { useRouter } from "next/navigation";
 import AddressFormSection from "../components/AddressFormSection";
+
+"use client";
+
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -11,51 +15,62 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
+    setError(null);
 
-    const formData = new FormData(event.target);
-    formData.append("name", name)
-    formData.append("email", email)
-    formData.append("password", password)
-    formData.append("address", address)
-    formData.append("phoneNumber", phoneNumber)
+    try {
+      // Create FormData object
+      const formData = new FormData();
+      formData.append('email', email);
+      formData.append('password', password);
+      formData.append('name', name);
+      formData.append('address', address);
+      formData.append('phoneNumber', phoneNumber);
 
-    const response = await signup(formData);
+      const { data, error: signupError } = await signup(formData);
 
-    if (response.error) {
-      setError(true);
+      if (signupError) {
+        setError(signupError.message || "Signup failed");
+        return;
+      }
+
+      // If signup is successful and we have session data, update Redux
+      if (data?.session) {
+        dispatch(setSession({
+          user: data.session.user,
+          session: data.session
+        }));
+        // Let the server action handle redirect
+      }
+    } catch (catchedError) {
+      setError(catchedError.message || "An error occurred during signup");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
-    <div
-      className="sign-up__wrapper"
-    >
-      {/* Overlay */}
+    <div className="sign-up__wrapper"></div>
       <div className="sign-in__backdrop"></div>
-      {/* Form */}
       <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}>
-        {/* Header */}
         <div className="h4 mb-2 text-center">Sign Up</div>
-        {/* Alert */}
-        {error ? (
+
+        {error && (
           <Alert
             className="mb-2"
             variant="danger"
-            onClose={() => setError(false)}
+            onClose={() => setError(null)}
             dismissible
           >
-            An error occured, please try again.
+            {error}
           </Alert>
-        ) : (
-          <div />
         )}
 
         <Form.Group className="mb-2" controlId="name">
@@ -70,7 +85,7 @@ const Signup = () => {
         </Form.Group>
 
         <Form.Group className="mb-2" controlId="email">
-        <Form.Label>Email</Form.Label>
+          <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
             value={email}
@@ -91,7 +106,7 @@ const Signup = () => {
           />
         </Form.Group>
 
-        <AddressFormSection address={address} setAddress={setAddress}/>
+        <AddressFormSection address={address} setAddress={setAddress} />
 
         <Form.Group className="mb-2" controlId="phoneNumber">
           <Form.Label>Phone Number</Form.Label>
@@ -105,33 +120,26 @@ const Signup = () => {
             title="Phone number must be in the format 123-456-7890"
           />
         </Form.Group>
-      
+
         <Form.Group className="mb-2" controlId="checkbox">
           <Form.Check type="checkbox" label="Remember me" />
         </Form.Group>
-        {!loading ? (
-          <Button className="w-100" variant="primary" type="submit">
-            Log In
-          </Button>
-        ) : (
-          <Button className="w-100" variant="primary" type="submit" disabled>
-            Logging In...
-          </Button>
-        )}
-        <div className="d-grid justify-content-end">
-          <Button
-            className="text-muted px-0"
-            variant="link"
-          >
-            Forgot password?
-          </Button>
-        </div>
+
+        <Button
+          className="w-100"
+          variant="primary"
+          type="submit"
+          disabled={loading}
+        >
+          {loading ? "Signing Up..." : "Sign Up"}
+        </Button>
       </Form>
-      {/* Footer */}
+
       <div className="w-100 mb-2 position-absolute bottom-0 start-50 translate-middle-x text-white text-center">
         Made by Hendrik C | &copy;2022
       </div>
     </div>
   );
 };
-export default Signup;
+
+export default Signup;</Form.Group>
