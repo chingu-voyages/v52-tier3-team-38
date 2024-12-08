@@ -19,4 +19,4 @@ const UnauthHeader = () => {
   )
 }
 
-export default UnauthHeader
+export default UnauthHeader;

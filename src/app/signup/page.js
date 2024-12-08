@@ -3,14 +3,11 @@
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { signup } from "../../../utils/supabase/actions";
-import AddressFormSection from "../components/AddressFormSection";
 
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [address, setAddress] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -22,8 +19,6 @@ const Signup = () => {
     formData.append("name", name)
     formData.append("email", email)
     formData.append("password", password)
-    formData.append("address", address)
-    formData.append("phoneNumber", phoneNumber)
 
     const response = await signup(formData);
 
@@ -90,32 +85,14 @@ const Signup = () => {
             required
           />
         </Form.Group>
-
-        <AddressFormSection address={address} setAddress={setAddress}/>
-
-        <Form.Group className="mb-2" controlId="phoneNumber">
-          <Form.Label>Phone Number</Form.Label>
-          <Form.Control
-            type="tel"
-            value={phoneNumber}
-            placeholder="Phone Number ex: 123-456-789"
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            required
-            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-            title="Phone number must be in the format 123-456-7890"
-          />
-        </Form.Group>
       
-        <Form.Group className="mb-2" controlId="checkbox">
-          <Form.Check type="checkbox" label="Remember me" />
-        </Form.Group>
         {!loading ? (
           <Button className="w-100" variant="primary" type="submit">
-            Log In
+            Sign up
           </Button>
         ) : (
           <Button className="w-100" variant="primary" type="submit" disabled>
-            Logging In...
+            Signing up...
           </Button>
         )}
         <div className="d-grid justify-content-end">
