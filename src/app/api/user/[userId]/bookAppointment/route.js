@@ -7,6 +7,10 @@ export const POST = async(request, { params }) => {
     const body = await request.json();
     const { userId } = await params;
 
+    const alreadyHasAppointment = await supabase.from("appointments").select("*").eq("resident_id", userId)
+
+    if (alreadyHasAppointment.data.length > 0) return NextResponse.json({error: `Error: You already have an appointment booked.`}, {status: 403});
+
     //Make sure the address is valid
     const addressInfo = body.address.split(" ");
     const addressNumber = addressInfo[0]
@@ -25,10 +29,6 @@ export const POST = async(request, { params }) => {
     if (error) return NextResponse.json({error: "A user with this id does not exist "}, {status: 404});
 
     // if (user.role === 1) return NextResponse.json({error: "Admins cannot book appointments."}, {status: 403});
-
-    const alreadyHasAppointment = await supabase.from("appointments").select("*").eq("resident_id", userId)
-
-    if (alreadyHasAppointment.data.length > 0) return NextResponse.json({error: `Error: You already have an appointment booked.`}, {status: 403});
 
     const appointmentInsertInfo = await supabase.from('appointments').insert({
       resident_id: userId,
