@@ -13,7 +13,7 @@ const AppointmentForm = () => {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const {_id } = useParams();
+  const { _id } = useParams();
 
   const handleSubmit = async(event) => {
     event.preventDefault();
