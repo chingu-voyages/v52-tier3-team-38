@@ -6,24 +6,32 @@ import { createClient } from "./server"
 export async function login(formData) {
   const supabase = await createClient();
 
-  const credentials = {
+  const { data, error } = await supabase.auth.signInWithPassword({
     email: formData.get('email'),
     password: formData.get('password')
-  }
+  });
 
-  const { error } = await supabase.auth.signInWithPassword(credentials)
-
- if (error) {
+  if (error) {
     return {
       error: {
         message: error.message,
         status: error.status
       }
-    }
+    };
   }
 
-  revalidatePath('/', 'layout')
-  redirect('/') //redirects to landing page if login was successful.
+  if (!data?.session) {
+    return {
+      error: {
+        message: "No session created",
+        status: 400
+      }
+    };
+  }
+
+  // Don't need to dispatch here since AuthProvider will handle it
+  revalidatePath('/', 'layout');
+  redirect('/');
 }
 
 export async function signup(formData) {
