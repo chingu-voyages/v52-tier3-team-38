@@ -1,6 +1,6 @@
 "use client";
 
-import { use } from 'react';
+import { use } from "react";
 import { useGetUserByIdQuery } from "@/redux/slices/usersApiSlice";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -29,7 +29,7 @@ function UserPage({ params }){
   useEffect(() => {
     console.log("Query state:", { isLoading, isError, userData, error });
     if (isError) {
-      console.error('Detailed Query Error:', {
+      console.error("Detailed Query Error:", {
         status: error?.status,
         data: error?.data,
         message: error?.message
@@ -48,7 +48,7 @@ function UserPage({ params }){
   if (isError) {
     return <div>
       Error loading user data:
-      {error?.data?.message || error?.message || 'Unknown error'}
+      {error?.data?.message || error?.message || "Unknown error"}
     </div>;
   }
 
@@ -61,9 +61,9 @@ function UserPage({ params }){
       <h2>User Profile</h2>
       <div>
         <h3>User Details</h3>
-        <p>Name: {userData.name || 'N/A'}</p>
-        <p>Address: {userData.address || 'N/A'}</p>
-        <p>Phone: {userData.phone_number || 'N/A'}</p>
+        <p>Name: {userData.name || "N/A"}</p>
+        <p>Address: {userData.address || "N/A"}</p>
+        <p>Phone: {userData.phone_number || "N/A"}</p>
       </div>
     </div>
   );
