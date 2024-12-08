@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { signup } from "../../../utils/supabase/actions";
+import AddressFormSection from "../components/AddressFormSection";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -10,7 +11,6 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -34,8 +34,6 @@ const Signup = () => {
     setLoading(false);
   };
 
-  const handlePassword = () => {}; // Will address later
-
   return (
     <div
       className="sign-up__wrapper"
@@ -46,7 +44,7 @@ const Signup = () => {
       <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}>
         {/* Header */}
         <div className="h4 mb-2 text-center">Sign Up</div>
-        {/* ALert */}
+        {/* Alert */}
         {error ? (
           <Alert
             className="mb-2"
@@ -93,16 +91,7 @@ const Signup = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-2" controlId="Address">
-          <Form.Label>Address</Form.Label>
-          <Form.Control
-            type="text"
-            value={address}
-            placeholder="Address"
-            onChange={(e) => setAddress(e.target.value)}
-            required
-          />
-        </Form.Group>
+        <AddressFormSection address={address} setAddress={setAddress}/>
 
         <Form.Group className="mb-2" controlId="phoneNumber">
           <Form.Label>Phone Number</Form.Label>
@@ -133,7 +122,6 @@ const Signup = () => {
           <Button
             className="text-muted px-0"
             variant="link"
-            onClick={handlePassword}
           >
             Forgot password?
           </Button>
