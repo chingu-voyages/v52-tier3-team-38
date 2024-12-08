@@ -7,9 +7,9 @@ export const POST = async(request, { params }) => {
     const body = await request.json();
     const { userId } = await params;
 
-    const { data: user, error } = await supabase.from("user_details").select("*").eq("id", userId).single();
+    const existingUser = await supabase.from("user_details").select("*").eq("id", userId).single();
 
-    if (error) return NextResponse.json({error: "A user with this id does not exist "}, {status: 404});
+    if (existingUser.error) return NextResponse.json({error: "A user with this id does not exist "}, {status: 404});
 
     const alreadyHasAppointment = await supabase.from("appointments").select("*").eq("resident_id", userId)
 
@@ -33,7 +33,8 @@ export const POST = async(request, { params }) => {
       resident_id: userId,
       timeslot: body.timeslot,
       address:  body.address,
-      email: user.email,
+      email: existingUser.data.email,
+      phone_number: body.phoneNumber,
       lat: parseFloat(validAddress[0].lat), // to use for google map coordinates in admin interface
       lon: parseFloat(validAddress[0].lon)
     })
