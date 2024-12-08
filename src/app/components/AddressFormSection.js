@@ -12,7 +12,7 @@ const AddressFormSection = ({address, setAddress}) => {
       clearTimeout(timeoutRef.current)
     }
 
-    timeoutRef.current = setTimeout(() => { // Any time a user enters something after 0.3 seconds we call the api
+    timeoutRef.current = setTimeout(() => { // Any time a user enters something, after 0.3 seconds we call the api to process the input
       getSuggestions(userInput);
     }, 300)
   }

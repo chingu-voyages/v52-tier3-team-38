@@ -9,11 +9,12 @@ const AppointmentForm = () => {
   const [address, setAddress] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const {_id } = useParams();
+  const { _id } = useParams();
 
   const handleSubmit = async(event) => {
     event.preventDefault();
@@ -22,7 +23,7 @@ const AppointmentForm = () => {
     try {
       const response = await fetch(`/api/user/${_id}/bookAppointment`, {
         method: "POST",
-        body: JSON.stringify({timeslot, address})
+        body: JSON.stringify({timeslot, address, phoneNumber})
       })
 
       const data = await response.json()
@@ -96,6 +97,19 @@ const AppointmentForm = () => {
             value={time}
             onChange={(e) => setTime(e.target.value)}
             required
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-2" controlId="phoneNumber">
+          <Form.Label>Phone Number</Form.Label>
+          <Form.Control
+            type="tel"
+            value={phoneNumber}
+            placeholder="Phone Number ex: 123-456-789"
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            required
+            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+            title="Phone number must be in the format 123-456-7890"
           />
         </Form.Group>
 

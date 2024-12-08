@@ -42,7 +42,7 @@ export async function signup(formData) {
     id: data.user.id,
     name: formData.get('name'),
     address: formData.get('address'),
-    phone_number: formData.get('phoneNumber'),
+    phone_number: formData.get('phoneNumber'), // May remove as it seems redundant based on requirements
   }
 
   const { error: insertError } = await supabase.from('user_details').insert(additonalCredentials)
