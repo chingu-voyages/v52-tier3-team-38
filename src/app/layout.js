@@ -6,7 +6,6 @@ import UserNavbar from "./components/UserNavbar";
 import UnauthHeader from "./components/UnauthHeader";
 import UnauthNavbar from "./components/UnauthNavbar";
 
-import { getUserDetails } from "../../utils/supabase/getUserDetails";
 import { isAdmin } from "../../utils/supabase/isAdmin";
 
 import { createClient } from "../../utils/supabase/server";
@@ -47,9 +46,6 @@ export default async function RootLayout({ children }) {
       </html>
     );
   }
-
-  const userDetails = await getUserDetails(user.id);
-  console.log("User details:", userDetails);
 
   return ( // User
     <html lang="en" suppressHydrationWarning>
