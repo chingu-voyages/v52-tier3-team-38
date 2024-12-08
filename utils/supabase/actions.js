@@ -1,7 +1,7 @@
 'use server'
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-import { createClient } from "./server"
+import { createClient } from "./server";
 
 export async function login(formData) {
   const supabase = await createClient();
@@ -78,6 +78,7 @@ export async function signInWithGoogle() {
         access_type: "offline",
         prompt: "consent",
       },
+      redirectTo: `${process.env.BASE_URL}/auth/callback`
     },
   });
 
@@ -85,7 +86,6 @@ export async function signInWithGoogle() {
     console.log(error);
     redirect("/error");
   }
-
 
   redirect(data.url);
 }
