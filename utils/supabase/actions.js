@@ -29,7 +29,14 @@ export async function signup(formData) {
     password: formData.get('password')
   }
 
-  const { error } = await supabase.auth.signUp(credentials);
+  const { error } = await supabase.auth.signUp({
+    ...credentials,
+    options: {
+      data: {
+        name: formData.get('name')
+      }
+    }
+  });
 
   if (error) {
     console.log(error)
