@@ -29,26 +29,11 @@ export async function signup(formData) {
     password: formData.get('password')
   }
 
-  const { data, error } = await supabase.auth.signUp(credentials);
+  const { error } = await supabase.auth.signUp(credentials);
 
   if (error) {
     console.log(error)
     return { error }
-  }
-
-  console.log(data)
-
-  const additonalCredentials = { // after the user is signed up store the additional info in the user_details table which is connected to auth.users in a 1 to 1 relationship.
-    id: data.user.id,
-    name: formData.get('name'),
-    address: formData.get('address'),
-    phone_number: formData.get('phoneNumber'), // May remove as it seems redundant based on requirements
-  }
-
-  const { error: insertError } = await supabase.from('user_details').insert(additonalCredentials)
-
-  if (insertError) {
-    return { insertError }
   }
 
   revalidatePath('/', 'layout')
