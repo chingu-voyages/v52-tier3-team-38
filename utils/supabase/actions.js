@@ -35,37 +35,25 @@ export async function login(formData) {
 }
 
 export async function signup(formData) {
-  const supabase = await createClient()
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email: formData.get('email'),
+      password: formData.get('password'),
+      options: {
+        data: {
+          name: formData.get('name'),
+          address: formData.get('address'),
+          phoneNumber: formData.get('phoneNumber'),
+        },
+      },
+    });
 
-  const credentials = {
-    email: formData.get('email'),
-    password: formData.get('password')
+    if (error) throw error;
+
+    return { data, error: null };
+  } catch (error) {
+    return { data: null, error };
   }
-
-  const { data, error } = await supabase.auth.signUp(credentials);
-
-  if (error) {
-    console.log(error)
-    return { error }
-  }
-
-  console.log(data)
-
-  const additonalCredentials = { // after the user is signed up store the additional info in the user_details table which is connected to auth.users in a 1 to 1 relationship.
-    id: data.user.id,
-    name: formData.get('name'),
-    address: formData.get('address'),
-    phone_number: formData.get('phoneNumber'),
-  }
-
-  const { error: insertError } = await supabase.from('user_details').insert(additonalCredentials)
-
-  if (insertError) {
-    return { insertError }
-  }
-
-  revalidatePath('/', 'layout')
-  redirect('/')
 }
 
 export async function logout() {

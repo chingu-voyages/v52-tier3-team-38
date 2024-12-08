@@ -15,15 +15,19 @@ const UserHeader = () => {
     try {
       // Clear client-side state first
       dispatch(clearSession());
-      
+
       // Call the server action
       await logout();
-      
+
       // Note: we don't need router.replace here because the server action handles redirect
     } catch (error) {
       if (error.message !== "NEXT_REDIRECT") {
-        console.error("Error during logout:", error?.message || "Logout failed");
+        console.error(
+          "Error during logout:",
+          error?.message || "Logout failed"
+        );
         router.refresh();
+      }
     }
   };
 
@@ -35,13 +39,13 @@ const UserHeader = () => {
         </Link>
         <div className="d-flex align-items-center gap-3">
           <h3 className="m-0">Logged in as resident!</h3>
-          <Button variant="danger" onClick={handleLogout}>Log Out</Button>
+          <Button variant="danger" onClick={handleLogout}>
+            Log Out
+          </Button>
         </div>
       </div>
     </header>
   );
 };
-
-}
 
 export default UserHeader;

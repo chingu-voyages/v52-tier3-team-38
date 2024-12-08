@@ -1,4 +1,3 @@
-// AdminHeader.js
 "use client";
 
 import { Button } from "react-bootstrap";
@@ -23,8 +22,12 @@ const AdminHeader = () => {
       // Note: we don't need router.replace here because the server action handles redirect
     } catch (error) {
       if (error.message !== "NEXT_REDIRECT") {
-        console.error("Error during logout:", error?.message || "Logout failed");
+        console.error(
+          "Error during logout:",
+          error?.message || "Logout failed"
+        );
         router.refresh();
+      }
     }
   };
 
@@ -36,13 +39,13 @@ const AdminHeader = () => {
         </Link>
         <div className="d-flex align-items-center gap-3">
           <h3 className="m-0">Logged in as admin!</h3>
-          <Button variant="danger" onClick={handleLogout}>Log Out</Button>
+          <Button variant="danger" onClick={handleLogout}>
+            Log Out
+          </Button>
         </div>
       </div>
     </header>
   );
-};
-
 };
 
 export default AdminHeader;

@@ -31,7 +31,7 @@ const Login = () => {
 
   return (
       <Container>
-        <h2 className="text-center mt-4">Admin Login</h2> 
+        <h2 className="text-center mt-4">Admin Login</h2>
         { error ? <Alert
             className="mb-2"
             variant="danger"

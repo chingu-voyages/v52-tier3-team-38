@@ -15,7 +15,7 @@ const Requests = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
@@ -29,13 +29,13 @@ const Requests = () => {
 
   const fetchRequests = async (page = 1) => {
     if (!user) return;
-    
+
     setLoading(true);
     setError(null);
-    
+
     try {
       const supabase = createClient();
-      
+
       // Get total count
       const { count, error: countError } = await supabase
         .from('service_requests')
@@ -85,14 +85,14 @@ const Requests = () => {
 
   const renderPagination = () => {
     const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
-    
+
     return (
       <Pagination className="justify-content-center mt-4">
         <Pagination.Prev 
           onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
           disabled={currentPage === 1}
         />
-        
+
         {[...Array(totalPages)].map((_, idx) => (
           <Pagination.Item
             key={idx + 1}
@@ -102,8 +102,8 @@ const Requests = () => {
             {idx + 1}
           </Pagination.Item>
         ))}
-        
-        <Pagination.Next 
+
+        <Pagination.Next
           onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
           disabled={currentPage === totalPages}
         />
@@ -124,13 +124,13 @@ const Requests = () => {
   return (
     <Container>
       <h2 className="text-center mt-4">Service Requests</h2>
-      
+
       {error && (
         <div className="alert alert-danger" role="alert">
           {error}
         </div>
       )}
-      
+
       <div className="mt-4 shadow p-4 bg-white rounded">
         <Table responsive hover>
           <thead>

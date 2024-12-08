@@ -112,4 +112,4 @@ function AdminPage({ params }) {
   );
 }
 
-export default AdminPage; 
+export default AdminPage;

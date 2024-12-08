@@ -27,7 +27,7 @@ export default function AuthProvider({ children }) {
     const refreshSession = async () => {
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
-        
+
         if (error) {
           console.error('Session refresh error:', error);
           dispatch(clearSession());

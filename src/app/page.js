@@ -17,8 +17,8 @@ export default function Root() {
     if (!isInitialized) return;
 
     if (user) {
-      const path = role === 'admin' ? 
-        `/admin/${user.id}/profile` : 
+      const path = role === 'admin' ?
+        `/admin/${user.id}/profile` :
         `/user/${user.id}/profile`;
       router.push(path);
     }

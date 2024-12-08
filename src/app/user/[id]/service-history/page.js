@@ -9,7 +9,7 @@ const ServiceHistory = () => {
   const router = useRouter();
   const params = useParams();
   const { user, isInitialized } = useSelector((state) => state.auth);
-  
+
   useEffect(() => {
     if (!isInitialized) return;
     if (!user || user.id !== params.id) {

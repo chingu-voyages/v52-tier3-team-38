@@ -10,7 +10,7 @@ const AppointmentForm = () => {
   const router = useRouter();
   const params = useParams();
   const { user, isInitialized } = useSelector((state) => state.auth);
-  
+
   const [formData, setFormData] = useState({
     name: "",
     date: "",
@@ -95,7 +95,7 @@ const AppointmentForm = () => {
           Your request has been submitted. We will email you if your appointment has been confirmed.
         </Alert>
       )}
-      
+
       {error && (
         <Alert
           className="mb-2"
@@ -106,7 +106,7 @@ const AppointmentForm = () => {
           {errorMessage}
         </Alert>
       )}
-        
+
       <Form onSubmit={handleSubmit} className="mt-4 shadow p-4 bg-white rounded">
         <Form.Group className="mb-3" controlId="name">
           <Form.Label>Name</Form.Label>
