@@ -15,7 +15,6 @@ export const POST = async(request, { params }) => {
 
     const { data: user, error } = await supabase.from("user_details").select("*").eq("id", userId).single();
 
-
     if (error) return NextResponse.json({error: "A user with this id does not exist "}, {status: 404});
 
     if (user.role === 1) return NextResponse.json({error: "Admins cannot book appointments."}, {status: 403});
@@ -27,8 +26,8 @@ export const POST = async(request, { params }) => {
     const appointmentInsertInfo = await supabase.from('appointments').insert({
       resident_id: userId,
       timeslot: body.timeslot,
-      address:  body.address
-      //status is not needed here as it is pending by default
+      address:  body.address,
+      email: user.email,
     })
 
     return NextResponse.json({ message: `Appointment for ${user.name} sucessfully created`, appointmentInsertInfo }, { status: 201 });

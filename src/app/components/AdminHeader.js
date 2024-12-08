@@ -1,3 +1,4 @@
+// AdminHeader.js
 "use client";
 
 import { Button } from "react-bootstrap";
@@ -13,13 +14,17 @@ const AdminHeader = () => {
 
   const handleLogout = async () => {
     try {
-      const { error } = await logout();
-      if (error) throw error;
-
+      // Clear client-side state first
       dispatch(clearSession());
-      router.push("/");
+
+      // Call the server action
+      await logout();
+
+      // Note: we don't need router.replace here because the server action handles redirect
     } catch (error) {
-      console.error("Error during logout:", error.message);
+      if (error.message !== "NEXT_REDIRECT") {
+        console.error("Error during logout:", error?.message || "Logout failed");
+        router.refresh();
     }
   };
 
@@ -36,6 +41,8 @@ const AdminHeader = () => {
       </div>
     </header>
   );
+};
+
 };
 
 export default AdminHeader;
