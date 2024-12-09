@@ -7,7 +7,7 @@ export const POST = async(request, { params }) => {
     const body = await request.json();
     const { userId } = await params;
 
-    const existingUser = await supabase.from("auth").select("*").eq("id", userId).single();
+    const existingUser = await supabase.from("user_details").select("*").eq("id", userId).single();
 
     if (existingUser.error) return NextResponse.json({error: "A user with this id does not exist "}, {status: 404});
 
