@@ -16,16 +16,14 @@ const UserPage = () => {
     const fetchUserAndAppointments = async () => {
       try {
         const supabase = createClient();
-
-        // Get user session - using same pattern as navbar
         const { data: { user: currentUser } } = await supabase.auth.getUser();
+
         if (!currentUser) {
           router.push("/login");
           return;
         }
         setUser(currentUser);
 
-        // Fetch appointments (filtered by user.id in the API)
         const response = await fetch("/api/appointments");
         const data = await response.json();
 
@@ -33,7 +31,6 @@ const UserPage = () => {
           throw new Error(data.error || "Failed to fetch appointments");
         }
 
-        // Filter appointments for this user
         const userAppointments = data.appointments.filter(
           app => app.resident_id === currentUser.id
         );
@@ -49,7 +46,7 @@ const UserPage = () => {
     fetchUserAndAppointments();
   }, [router]);
 
-  const handleCancel = async (appointmentId) => {
+  const cancelHandler = async (appointmentId) => {
     try {
       const response = await fetch("/api/appointments", {
         method: "PUT",
@@ -68,9 +65,8 @@ const UserPage = () => {
         throw new Error(data.error || "Failed to cancel appointment");
       }
 
-      // Update the appointment in the local state
-      setAppointments(appointments.map(app => 
-        app.id === appointmentId 
+      setAppointments(appointments.map(app =>
+        app.id === appointmentId
           ? { ...app, status: "Cancelled" }
           : app
       ));
@@ -80,7 +76,7 @@ const UserPage = () => {
   };
 
   if (!user) {
-    return null; // Don't render until we have user, just like navbar
+    return null;
   }
 
   if (loading) {
@@ -98,44 +94,24 @@ const UserPage = () => {
 
   return (
     <Container>
-      {user && (
-        <Card>
-          <Card.Header>User Profile</Card.Header>
+      {appointments.map((appointment) => (
+        <Card key={appointment.id} className="mb-3">
           <Card.Body>
-            <div>Name: {user.user_metadata?.name}</div>
-            <div>Email: {user.email}</div>
+            <Card.Title>Appointment on {appointment.date}</Card.Title>
+            <Card.Text>Status: {appointment.status}</Card.Text>
+            {appointment.status !== 'Cancelled' && (
+              <Button
+                variant="danger"
+                onClick={() => cancelHandler(appointment.id)}
+              >
+                Cancel Appointment
+              </Button>
+            )}
           </Card.Body>
         </Card>
-      )}
-
-      <h2>Your Installation Requests</h2>
-
-      {appointments.length === 0 ? (
-        <Card>
-          <Card.Body>
-            No installation requests found.
-          </Card.Body>
-        </Card>
-      ) : (
-        appointments.map((appointment) => (
-          <Card key={appointment.id}>
-            <Card.Header>Request Details</Card.Header>
-            <Card.Body>
-              <div>Installation Address: {appointment.address}</div>
-              <div>Appointment Time: {new Date(appointment.timeslot).toLocaleString()}</div>
-              <div>Status: {appointment.status}</div>
-
-              {appointment.status === "pending" && (
-                <Button
-                  variant="danger"
-                  onClick={() => handleCancel(appointment.id)}
-                >
-                  Cancel Installation
-                </Button>
-              )}
-            </Card.Body>
-          </Card>
-        ))
+      ))}
+      {appointments.length === 0 && (
+        <p>No appointments found.</p>
       )}
     </Container>
   );
