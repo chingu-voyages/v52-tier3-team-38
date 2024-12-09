@@ -23,7 +23,7 @@ const AppointmentForm = () => {
     try {
       const response = await fetch(`/api/user/${_id}/bookAppointment`, {
         method: "POST",
-        body: JSON.stringify({timeslot, address, phoneNumber})
+        body: JSON.stringify({timeslot, address, phoneNumber, name})
       })
 
       const data = await response.json();

@@ -30,10 +30,11 @@ export const POST = async(request, { params }) => {
     // if (user.role === 1) return NextResponse.json({error: "Admins cannot book appointments."}, {status: 403});
 
     const appointmentInsertInfo = await supabase.from('appointments').insert({
+      name: body.name,
       resident_id: userId,
       timeslot: body.timeslot,
       address:  body.address,
-      email: existingUser.data.email,
+      email: user.email,
       phone_number: body.phoneNumber,
       lat: parseFloat(validAddress[0].lat), // to use for google map coordinates in admin interface
       lon: parseFloat(validAddress[0].lon)
