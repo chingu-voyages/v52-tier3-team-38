@@ -26,16 +26,16 @@ const AppointmentForm = () => {
         body: JSON.stringify({timeslot, address, phoneNumber})
       })
 
-      const data = await response.json()
-
-      console.log(data)
+      const data = await response.json();
 
       if (data.error) {
         setErrorMessage(data.error)
         setError(true)
       } 
 
+
       else if (data.appointmentInsertInfo.status == 201) {
+        console.log(data)
         setSuccess(true)
       }
 

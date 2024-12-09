@@ -1,5 +1,6 @@
 import MapView from "@/app/components/MapView";
 import { createClient } from "../../../../../utils/supabase/server"
+import AppointmentListView from "@/app/components/AppointmentListView";
 
 const Requests = async() => {
   const supabase = await createClient();
@@ -7,8 +8,8 @@ const Requests = async() => {
 
   console.log(appointments)
   return (
-    <MapView/>
+    <AppointmentListView/>
   )
 }
 
-export default Requests
+export default Requests;

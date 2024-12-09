@@ -7,9 +7,9 @@ export const POST = async(request, { params }) => {
     const body = await request.json();
     const { userId } = await params;
 
-    const existingUser = await supabase.from("user_details").select("*").eq("id", userId).single();
+    const { data: user, error} = await supabase.auth.getUser()
 
-    if (existingUser.error) return NextResponse.json({error: "A user with this id does not exist "}, {status: 404});
+    if (error || !user ) return NextResponse.json({error: "A user with this id does not exist "}, {status: 404});
 
     const alreadyHasAppointment = await supabase.from("appointments").select("*").eq("resident_id", userId)
 
@@ -39,8 +39,9 @@ export const POST = async(request, { params }) => {
       lon: parseFloat(validAddress[0].lon)
     })
 
-    return NextResponse.json({ message: `Appointment for ${user.name} sucessfully created`, appointmentInsertInfo }, { status: 201 });
+    return NextResponse.json({ message: `Appointment sucessfully created`, appointmentInsertInfo }, { status: 201 });
   } catch (err) {
+    console.log(err)
     return NextResponse.json({ error: err }, { status: 400 });
   }
 }
