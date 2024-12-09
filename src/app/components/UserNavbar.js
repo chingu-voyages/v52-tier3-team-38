@@ -19,7 +19,7 @@ const UserNavbar = () => {
       if (user) {
         setUserId(user.id);
       } else {
-        // If no user is found, redirect to login
+        // If no user found, redirect to login
         router.push("/login");
       }
     }
@@ -28,10 +28,10 @@ const UserNavbar = () => {
   }, [router]);
 
   if (!userId) {
-    return null; // Don't render navbar until we have the user ID
+    return null; // Don't render navbar until we have user
   }
 
-  // Helper function to check if a path is active
+  // Helper func to check if path is active
   const isActive = (path) => pathname === `/user/${userId}${path}`;
 
   return (
