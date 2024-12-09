@@ -1,7 +1,5 @@
 import React from "react";
 
-//Pagination
-
 const AppointmentListView = ({ appointments }) => {
   return (
     <div className="card-container">
@@ -15,7 +13,7 @@ const AppointmentListView = ({ appointments }) => {
           </div>
         ))
       ) : (
-        <div className="no-appointments">No appointments available at the moment.</div>
+        <div className="no-appointments">No appointments scheduled at the moment.</div>
       )}
     </div>
   );

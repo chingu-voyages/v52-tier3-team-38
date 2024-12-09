@@ -1,25 +1,34 @@
-import { Pagination } from "react-bootstrap"
-export const AppointmentPagination = ({total, current, onChangePage}) => {
-  let items = [];
+import React from 'react'
+import PaginationControls from './PaginationControls'
 
-  if (current > 1) {
-    items.push(<Pagination.Prev key="prev" onChangePage={() => page - 1}/>)
-  }
+const AppointmentPagination = ({searchParams, appointments}) => {
+  const page = searchParams['page'] || '1'
+  const per_page = searchParams['per_page'] || '2'
 
+  const start = (Number(page) - 1) * Number(per_page);
+  const end = start + Number(per_page);
 
-  for (let page = 1; page <= total; page++) {
-    items.push(
-      <Pagination.Item key={page} data-page={page} active={page === current} onChangePage={page}>
-        {page}
-      </Pagination.Item>
-    )
-  }
-
-  if (current < total) {
-    items.push(<Pagination.Next key="next" onChangePage={() => page + 1}/>)
-  }
+  const appointmentsPerPage = appointments.slice(start, end)
 
   return (
-    <Pagination>{items}</Pagination>
+    <div className="card-container">
+    {appointments && appointments.length > 0 ? (
+      appointmentsPerPage.map((appointment) => (
+        <div className="appointment-card" key={appointment.id}>
+          <h3>{appointment.name}</h3>
+          <p><strong>Time Slot:</strong> {appointment.timeslot}</p>
+          <p><strong>Status:</strong> {appointment.status}</p>
+          <p><strong>Phone:</strong> {appointment.phone_number}</p>
+        </div>
+      ))
+    ) : (
+      <div className="no-appointments">No appointments scheduled at the moment.</div>
+    )}
+
+    <PaginationControls/>
+  </div>
   )
+
 }
+
+export default AppointmentPagination;
