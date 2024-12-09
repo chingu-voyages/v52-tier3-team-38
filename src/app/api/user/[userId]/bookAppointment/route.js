@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient } from "../../../../../../utils/supabase/server";
+import { isAdmin } from "../../../../../../utils/supabase/isAdmin";
 
 export const POST = async(request, { params }) => {
   try {
@@ -27,7 +28,9 @@ export const POST = async(request, { params }) => {
       return NextResponse.json({error: "The address submitted is not a valid address in LA. Please try again."}, {status:404})
     }
 
-    // if (user.role === 1) return NextResponse.json({error: "Admins cannot book appointments."}, {status: 403});
+    const userIsAdmin = await isAdmin(body.email)
+
+    if (userIsAdmin) return NextResponse.json({error: "Admins cannot book appointments."}, {status: 403});
 
     const appointmentInsertInfo = await supabase.from('appointments').insert({
       name: body.name,
