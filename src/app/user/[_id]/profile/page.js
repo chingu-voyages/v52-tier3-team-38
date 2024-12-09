@@ -17,7 +17,7 @@ const UserPage = () => {
       try {
         const supabase = createClient();
         const { data: { user: currentUser } } = await supabase.auth.getUser();
-
+        
         if (!currentUser) {
           router.push("/login");
           return;
@@ -94,24 +94,41 @@ const UserPage = () => {
 
   return (
     <Container>
-      {appointments.map((appointment) => (
-        <Card key={appointment.id} className="mb-3">
+      {user && (
+        <Card>
+          <Card.Header>User Profile</Card.Header>
           <Card.Body>
-            <Card.Title>Appointment on {appointment.date}</Card.Title>
-            <Card.Text>Status: {appointment.status}</Card.Text>
-            {appointment.status !== 'Cancelled' && (
-              <Button
-                variant="danger"
-                onClick={() => cancelHandler(appointment.id)}
-              >
-                Cancel Appointment
-              </Button>
-            )}
+            <div>Name: {user.user_metadata?.name}</div>
+            <div>Email: {user.email}</div>
           </Card.Body>
         </Card>
-      ))}
-      {appointments.length === 0 && (
-        <p>No appointments found.</p>
+      )}
+      <h2>Your Installation Requests</h2>
+      {appointments.length === 0 ? (
+        <Card>
+          <Card.Body>
+            No installation requests found.
+          </Card.Body>
+        </Card>
+      ) : (
+        appointments.map((appointment) => (
+          <Card key={appointment.id}>
+            <Card.Header>Request Details</Card.Header>
+            <Card.Body>
+              <div>Installation Address: {appointment.address}</div>
+              <div>Appointment Time: {new Date(appointment.timeslot).toLocaleString()}</div>
+              <div>Status: {appointment.status}</div>
+              {appointment.status === "pending" && (
+                <Button
+                  variant="danger"
+                  onClick={() => cancelHandler(appointment.id)}
+                >
+                  Cancel Installation
+                </Button>
+              )}
+            </Card.Body>
+          </Card>
+        ))
       )}
     </Container>
   );
