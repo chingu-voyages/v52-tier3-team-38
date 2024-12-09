@@ -33,7 +33,7 @@ const AppointmentForm = () => {
       if (data.error) {
         setErrorMessage(data.error)
         setError(true)
-      } 
+      }
 
       else if (data.appointmentInsertInfo.status == 201) {
         setSuccess(true)
@@ -55,7 +55,7 @@ const AppointmentForm = () => {
           >
             Your request has been submitted. We will email you if your appointment has been confirmed.
           </Alert> : "" }
-      
+
       { error ? <Alert
             className="mb-2"
             variant="danger"
@@ -64,15 +64,15 @@ const AppointmentForm = () => {
           >
             {errorMessage}
           </Alert> : "" }
-        
+
       <Form onSubmit={handleSubmit} className="mt-4 shadow p-4 bg-white rounded">
         {/* Can have this autofill to whatever the users name is */}
         <Form.Group className="mb-3" controlId="name">
           <Form.Label>Name</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter your name" 
-            value={name} 
+            placeholder="Enter your name"
+            value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
