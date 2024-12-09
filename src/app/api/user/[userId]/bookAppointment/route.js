@@ -37,7 +37,7 @@ export const POST = async(request, { params }) => {
       resident_id: userId,
       timeslot: body.timeslot,
       address:  body.address,
-      email: user.email,
+      email: user.user.email,
       phone_number: body.phoneNumber,
       lat: parseFloat(validAddress[0].lat), // to use for google map coordinates in admin interface
       lon: parseFloat(validAddress[0].lon)
