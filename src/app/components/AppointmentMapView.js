@@ -13,7 +13,7 @@ const center = { //I am assuming it should be city hall in LA
   lng: -118.2437
 }
 
-const AppointmentMapView = () => {
+const AppointmentMapView = ({appointments}) => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
