@@ -9,16 +9,16 @@ import Link from "next/link"
 const AdminNavbar = () => {
 
   return (
-    <Nav fill variant="pills" defaultActiveKey={"/admin/_id/profile"}>
+    <Nav fill variant="pills" defaultActiveKey={`/admin/${_id}/profile`}>
     <div>Admin Navbar</div>
     <Nav.Item>
-    <Nav.Link href="/admin/_id/profile">Profile</Nav.Link>
+    <Nav.Link href={`/admin/${_id}/profile`}>Profile</Nav.Link>
     </Nav.Item>
      <Nav.Item>
-    <Nav.Link href="/admin/_id/requests">Requests</Nav.Link>
+    <Nav.Link href={`/admin/${_id}/requests`}>Requests</Nav.Link>
     </Nav.Item>
      <Nav.Item>
-      <Nav.Link href="/admin/_id/schedule">Schedule</Nav.Link>
+      <Nav.Link href={`/admin/${_id}/schedule`}>Schedule</Nav.Link>
     </Nav.Item>
     <Nav.Item>
       <Nav.Link href="/about">About Us</Nav.Link>
