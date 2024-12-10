@@ -34,7 +34,7 @@ const AppointmentListView = async({ searchParams, appointments }) => {
         </div>
 
         <div className="d-flex justify-content-center mt-3">
-          <PaginationControls hasNextPage={end < appointments.length} hasPrevPage={start > 0} />
+          <PaginationControls hasNextPage={end < appointments.length} hasPrevPage={start > 0} totalAppointments={appointments.length} />
         </div>
       </>
   );

@@ -3,7 +3,7 @@
 import React from "react";
 import { useRouter, useSearchParams } from 'next/navigation';
 
-const PaginationControls = ({ hasNextPage, hasPrevPage }) => {
+const PaginationControls = ({ hasNextPage, hasPrevPage, totalAppointments }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -24,7 +24,7 @@ const PaginationControls = ({ hasNextPage, hasPrevPage }) => {
         Prev Page
       </button>
 
-      <div>{page} / {Math.ceil(10 / Number(per_page))}</div>
+      <div>{page} / {Math.ceil(totalAppointments / Number(per_page))}</div>
 
       <button 
         className="btn btn-primary" 
