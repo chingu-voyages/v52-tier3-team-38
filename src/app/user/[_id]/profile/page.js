@@ -46,35 +46,6 @@ const UserPage = () => {
     fetchUserAndAppointments();
   }, [router]);
 
-  const cancelHandler = async (appointmentId) => {
-    try {
-      const response = await fetch("/api/appointments", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          appointmentId: appointmentId,
-          status: "Cancelled"
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!data.success) {
-        throw new Error(data.error || "Failed to cancel appointment");
-      }
-
-      setAppointments(appointments.map(app =>
-        app.id === appointmentId
-          ? { ...app, status: "Cancelled" }
-          : app
-      ));
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
   if (!user) {
     return null;
   }
@@ -118,14 +89,6 @@ const UserPage = () => {
               <div>Installation Address: {appointment.address}</div>
               <div>Appointment Time: {new Date(appointment.timeslot).toLocaleString()}</div>
               <div>Status: {appointment.status}</div>
-              {appointment.status === "pending" && (
-                <Button
-                  variant="danger"
-                  onClick={() => cancelHandler(appointment.id)}
-                >
-                  Cancel Installation
-                </Button>
-              )}
             </Card.Body>
           </Card>
         ))
