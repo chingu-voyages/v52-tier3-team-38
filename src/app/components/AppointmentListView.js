@@ -17,9 +17,10 @@ const AppointmentListView = async({ searchParams, appointments }) => {
             appointmentsPerPage.map((appointment) => (
               <div className="appointment-card" key={appointment.id}>
                 <h3>{appointment.name}</h3>
-                <p><strong>Time Slot:</strong> {appointment.timeslot}</p>
-                <p><strong>Status:</strong> {appointment.status}</p>
-                <p><strong>Phone:</strong> {appointment.phone_number}</p>
+                <p><strong>Date: </strong>{new Date(appointment.timeslot).toDateString()}</p>
+                <p><strong>Time: </strong>{new Date(appointment.timeslot).toTimeString()}</p>
+                <p><strong>Status: </strong> {appointment.status}</p>
+                <p><strong>Phone: </strong> {appointment.phone_number}</p>
               </div>
             ))
           ) : (
