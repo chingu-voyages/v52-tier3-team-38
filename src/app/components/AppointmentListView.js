@@ -3,9 +3,10 @@ import PaginationControls from './PaginationControls'
 import MarkVisitedButton from "./MarkVisitedButton";
 
 const AppointmentListView = async({ searchParams, appointments }) => {
-    await searchParams;
-    const page = searchParams['page'] || '1'
-    const per_page = searchParams['per_page'] || '2'
+    const search = await searchParams;
+  
+    const page = search["page"] || '1'
+    const per_page = search["per_page"] || '2'
   
     const start = (Number(page) - 1) * Number(per_page);
     const end = start + Number(per_page);
