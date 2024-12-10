@@ -1,9 +1,11 @@
 import React from "react";
 import PaginationControls from './PaginationControls'
+import MarkVisitedButton from "./MarkVisitedButton";
 
 const AppointmentListView = async({ searchParams, appointments }) => {
-    const page = await searchParams['page'] || '1'
-    const per_page = await searchParams['per_page'] || '2'
+    await searchParams;
+    const page = searchParams['page'] || '1'
+    const per_page = searchParams['per_page'] || '2'
   
     const start = (Number(page) - 1) * Number(per_page);
     const end = start + Number(per_page);
@@ -21,6 +23,9 @@ const AppointmentListView = async({ searchParams, appointments }) => {
                 <p><strong>Time: </strong>{new Date(appointment.timeslot).toTimeString()}</p>
                 <p><strong>Status: </strong> {appointment.status}</p>
                 <p><strong>Phone: </strong> {appointment.phone_number}</p>
+                {appointment.status === 'pending' ? (
+                <MarkVisitedButton appointmentId={appointment.id}/>
+              ) : ""}
               </div>
             ))
           ) : (
