@@ -1,12 +1,11 @@
 "use client";
-
 import Nav from 'react-bootstrap/Nav';
-
 import { FaGithub } from "react-icons/fa";
-
 import Link from "next/link"
+import { useParams } from 'next/navigation';
 
 const AdminNavbar = () => {
+  const { _id } = useParams();
 
   return (
     <Nav fill variant="pills" defaultActiveKey={`/admin/${_id}/profile`}>
@@ -15,7 +14,7 @@ const AdminNavbar = () => {
     <Nav.Link href={`/admin/${_id}/profile`}>Profile</Nav.Link>
     </Nav.Item>
      <Nav.Item>
-    <Nav.Link href={`/admin/${_id}/requests`}>Requests</Nav.Link>
+    <Nav.Link href={`/admin/requests`}>Requests</Nav.Link>
     </Nav.Item>
      <Nav.Item>
       <Nav.Link href={`/admin/${_id}/schedule`}>Schedule</Nav.Link>
@@ -30,4 +29,4 @@ const AdminNavbar = () => {
   )
 }
 
-export default AdminNavbar
+export default AdminNavbar;
