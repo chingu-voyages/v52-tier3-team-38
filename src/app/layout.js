@@ -51,8 +51,8 @@ export default async function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning>
       <body>
         <UserHeader />
-        {children}
         <UserNavbar/>
+        {children}
       </body>
     </html>
   );
