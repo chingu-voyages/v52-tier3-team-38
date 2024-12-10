@@ -24,6 +24,7 @@ const AppointmentListView = async({ searchParams, appointments }) => {
                 <p><strong>Time: </strong>{new Date(appointment.timeslot).toTimeString()}</p>
                 <p><strong>Status: </strong> {appointment.status}</p>
                 <p><strong>Phone: </strong> {appointment.phone_number}</p>
+                <p><strong>Address:</strong> {appointment.address}</p>
                 {appointment.status === 'pending' ? (
                 <MarkVisitedButton appointmentId={appointment.id}/>
               ) : ""}
