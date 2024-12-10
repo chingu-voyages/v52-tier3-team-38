@@ -1,5 +1,3 @@
-import UserPage from "./user/[_id]/profile/page";
-import AdminPage from "./admin/[_id]/profile/page";
 import GuestHome from "./GuestHome";
 
 import { createClient } from "../../utils/supabase/server";
