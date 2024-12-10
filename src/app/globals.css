@@ -40,3 +40,46 @@ a {
     color-scheme: dark;
   }
 }
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 16px;
+  justify-content: center;
+}
+
+.appointment-card {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  width: 240px;
+  text-align: center;
+  transition: box-shadow 0.2s ease;
+}
+
+.appointment-card:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.appointment-card h3 {
+  font-size: 1.1rem;
+  margin: 0 0 8px 0;
+}
+
+.appointment-card p {
+  margin: 4px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.no-appointments {
+  font-size: 1rem;
+  text-align: center;
+  color: #777;
+  padding: 20px;
+  width: 100%;
+}
+
