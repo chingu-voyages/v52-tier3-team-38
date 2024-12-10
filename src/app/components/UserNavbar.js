@@ -9,16 +9,12 @@ const UserNavbar = () => {
   const { _id } = useParams();
 
   return (
-    <Nav fill variant="pills" defaultActiveKey={"/user/_id/profile"}>
-    <div>Navbar</div>
+    <Nav fill variant="pills" defaultActiveKey={"/user/_id/profile"} className="p-3">
     <Nav.Item>
       <Nav.Link href={`/user/${_id}/profile`}>Profile</Nav.Link>
     </Nav.Item>
     <Nav.Item>
     <Nav.Link href={`/user/${_id}/submit-request`}>Submit Request</Nav.Link>
-    </Nav.Item>
-    <Nav.Item>
-    <Nav.Link href={`/user/${_id}/service-history`}>Service History</Nav.Link>
     </Nav.Item>
     <Nav.Item>
     <Nav.Link href="/about">About Us</Nav.Link>
