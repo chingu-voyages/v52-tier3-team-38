@@ -1,10 +1,13 @@
-"use client"
+import AppointmentMapView from "@/app/components/AppointmentMapView"
+import SwitchViewButton from "@/app/components/SwitchViewButton";
 
-import MapView from "@/app/components/MapView"
-
-const Appointments = () => {
+const MapView = () => {
   return (
-    <MapView/>
+    <>
+     <AppointmentMapView/>
+     <SwitchViewButton view={"listView"}/>
+    </>
+   
   )
 }
 

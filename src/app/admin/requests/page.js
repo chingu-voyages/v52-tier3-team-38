@@ -1,4 +1,4 @@
-import MapView from "@/app/components/MapView";
+import MapView from "@/app/components/AppointmentMapView";
 import { createClient } from "../../../../utils/supabase/server";
 import AppointmentListView from "@/app/components/AppointmentListView";
 

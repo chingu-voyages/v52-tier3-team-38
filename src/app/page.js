@@ -15,7 +15,7 @@ const Root = async () => {
 
   const userIsAdmin = await isAdmin(user.email);
 
-  userIsAdmin ? redirect(`/admin/requests`) : redirect(`/user/${user.id}/profile`)
+  userIsAdmin ? redirect(`/admin/appointments/listView`) : redirect(`/user/${user.id}/profile`)
 }
 
 export default Root;
