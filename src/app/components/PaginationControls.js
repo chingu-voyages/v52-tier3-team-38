@@ -10,7 +10,7 @@ const PaginationControls = ({ hasNextPage, hasPrevPage, totalAppointments }) => 
   const page = searchParams.get('page') || '1';
   const per_page = searchParams.get('per_page') || '2';
 
-  const pathName = `/admin/requests`;
+  const pathName = `/admin/appointments/listView`;
 
   return (
     <div className="d-flex gap-2 align-items-center">
