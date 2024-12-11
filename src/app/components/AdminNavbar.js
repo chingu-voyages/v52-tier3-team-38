@@ -14,9 +14,6 @@ const AdminNavbar = () => {
     <Nav.Link href={`/admin/${_id}/profile`}>Profile</Nav.Link>
     </Nav.Item>
      <Nav.Item>
-    <Nav.Link href={`/admin/requests`}>Requests</Nav.Link>
-    </Nav.Item>
-     <Nav.Item>
       <Nav.Link href={`/admin/${_id}/schedule`}>Schedule</Nav.Link>
     </Nav.Item>
     <Nav.Item>

@@ -1,17 +1,17 @@
-import AppointmentMapView from "@/app/components/AppointmentMapView"
+import AppointmentListView from "@/app/components/AppointmentListView";
 import SwitchViewButton from "@/app/components/SwitchViewButton";
 import { createClient } from "../../../../../utils/supabase/server";
 
-const MapView = async () => {
+
+const ListView = async ({searchParams}) => {
   const supabase = await createClient();
   const {data: appointments, error } = await supabase.from("appointments").select("*");
   return (
     <>
-     <AppointmentMapView appointments={appointments}/>
-     <SwitchViewButton view={"listView"}/>
+      <AppointmentListView searchParams={searchParams} appointments={appointments}/>
+      <SwitchViewButton view={"mapView"}/>
     </>
-   
   )
 }
 
-export default MapView;
+export default ListView;
