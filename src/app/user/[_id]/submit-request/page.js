@@ -43,12 +43,7 @@ const AppointmentForm = () => {
 
 return (
   <div className="d-flex flex-column py-5">
-    <div className="w-100" style={{ maxWidth: '800px', margin: '0 auto' }}>
-
-      <div className="d-flex justify-content-center mb-4">
-        <h2>Appointment Request</h2>
-      </div>
-
+    <div className="w-100" style={{ maxWidth: "800px", margin: "0 auto" }}>
 
       <div className="d-flex flex-column gap-2 mb-4">
         {success && (
@@ -64,6 +59,11 @@ return (
       </div>
 
       <Form className="p-4 bg-white rounded" onSubmit={handleSubmit}>
+
+      <div className="d-flex justify-content-center mb-4">
+        <h2>Appointment Request</h2>
+      </div>
+
 
         <div className="d-flex flex-column gap-4">
           <div className="d-flex gap-4 flex-column flex-md-row">
