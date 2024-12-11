@@ -27,11 +27,12 @@ const AppointmentMapView = ({appointments}) => {
       zoom={11}
     >
       {appointments.map((appointment) => (
+        appointment.status === 'pending' ?
         <Marker
           key={appointment.id} // Use the appointment's unique ID
           position={{ lat: appointment.lat, lng: appointment.lon }}
           onClick={() => setSelectedAppointment(appointment)} // Set the selected appointment
-        />
+        /> : null
       ))}
 
       {selectedAppointment && (
