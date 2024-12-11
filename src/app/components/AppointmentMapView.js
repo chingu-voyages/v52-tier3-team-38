@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react';
 
-import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api'
+import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-maps/api'
 
 const containerStyle = {
   width: '100%',
@@ -14,6 +14,7 @@ const center = { //I am assuming it should be city hall in LA
 }
 
 const AppointmentMapView = ({appointments}) => {
+  const [selectedAppointment, setSelectedAppointment] = useState("");
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
@@ -23,9 +24,31 @@ const AppointmentMapView = ({appointments}) => {
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={center}
-      zoom={13}
+      zoom={11}
     >
-      {/* Child components, such as markers, info windows, etc. */}
+      {appointments.map((appointment) => (
+        <Marker
+          key={appointment.id} // Use the appointment's unique ID
+          position={{ lat: appointment.lat, lng: appointment.lon }}
+          onClick={() => setSelectedAppointment(appointment)} // Set the selected appointment
+        />
+      ))}
+
+      {selectedAppointment && (
+        <InfoWindow
+          position={{ lat: selectedAppointment.lat, lng: selectedAppointment.lon }}
+          onCloseClick={() => setSelectedAppointment(null)}
+        >
+          <div className="appointment-card">
+            <h3>{selectedAppointment.name}</h3>
+            <p><strong>Date: </strong>{new Date(selectedAppointment.timeslot).toDateString()}</p>
+            <p><strong>Time: </strong>{new Date(selectedAppointment.timeslot).toTimeString()}</p>
+            <p><strong>Status: </strong>{selectedAppointment.status}</p>
+            <p><strong>Phone: </strong>{selectedAppointment.phone_number}</p>
+            <p><strong>Address: </strong>{selectedAppointment.address}</p>
+          </div>
+        </InfoWindow>
+      )}
       <></>
     </GoogleMap>
   ) : (
