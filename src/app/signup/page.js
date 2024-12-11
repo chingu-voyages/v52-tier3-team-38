@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { signup } from "../../../utils/supabase/actions";
+import Link from "next/link";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -16,9 +17,9 @@ const Signup = () => {
     setLoading(true);
 
     const formData = new FormData(event.target);
-    formData.append("name", name)
-    formData.append("email", email)
-    formData.append("password", password)
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
 
     const response = await signup(formData);
 
@@ -30,9 +31,7 @@ const Signup = () => {
   };
 
   return (
-    <div
-      className="sign-up__wrapper"
-    >
+    <div className="sign-up__wrapper">
       {/* Overlay */}
       <div className="sign-in__backdrop"></div>
       {/* Form */}
@@ -65,7 +64,7 @@ const Signup = () => {
         </Form.Group>
 
         <Form.Group className="mb-2" controlId="email">
-        <Form.Label>Email</Form.Label>
+          <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
             value={email}
@@ -85,21 +84,23 @@ const Signup = () => {
             required
           />
         </Form.Group>
-      
-        {!loading ? (
-          <Button className="w-100" variant="primary" type="submit">
-            Sign up
+
+        <div className="d-flex gap-2 mb-3">
+          <Button className="w-50" variant="danger" href="/">
+            Cancel
           </Button>
-        ) : (
-          <Button className="w-100" variant="primary" type="submit" disabled>
-            Signing up...
-          </Button>
-        )}
+          {!loading ? (
+            <Button className="w-50" variant="primary" type="submit">
+              Sign up
+            </Button>
+          ) : (
+            <Button className="w-50" variant="primary" type="submit" disabled>
+              Signing up...
+            </Button>
+          )}
+        </div>
         <div className="d-grid justify-content-end">
-          <Button
-            className="text-muted px-0"
-            variant="link"
-          >
+          <Button className="text-muted px-0" variant="link">
             Forgot password?
           </Button>
         </div>

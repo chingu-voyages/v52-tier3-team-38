@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { login } from "../../../utils/supabase/actions";
+import Link from "next/link";
 
 const Login = () => {
   const [inputEmail, setInputEmail] = useState("");
@@ -15,12 +16,13 @@ const Login = () => {
     setLoading(true);
 
     const formData = new FormData(event.target);
-    formData.append("email", inputEmail)
-    formData.append("password", inputPassword)
+    formData.append("email", inputEmail);
+    formData.append("password", inputPassword);
 
     const response = await login(formData);
 
-    if ( response.error ) { // shows if the response failed.
+    if (response.error) {
+      // shows if the response failed.
       setError(true);
     }
 
@@ -30,9 +32,7 @@ const Login = () => {
   const handlePassword = () => {}; // Will address later
 
   return (
-    <div
-      className="sign-in__wrapper"
-    >
+    <div className="sign-in__wrapper">
       {/* Overlay */}
       <div className="sign-in__backdrop"></div>
       {/* Form */}
@@ -75,15 +75,24 @@ const Login = () => {
         <Form.Group className="mb-2" controlId="checkbox">
           <Form.Check type="checkbox" label="Remember me" />
         </Form.Group>
-        {!loading ? (
-          <Button className="w-100" variant="primary" type="submit">
-            Log In
-          </Button>
-        ) : (
-          <Button className="w-100" variant="primary" type="submit" disabled>
-            Logging In...
-          </Button>
-        )}
+
+        <div className="d-flex gap-2 mb-3">
+          <Link href="/" className="w-50">
+            <Button className="w-100" variant="danger">
+              Cancel
+            </Button>
+          </Link>
+          {!loading ? (
+            <Button className="w-50" variant="primary" type="submit">
+              Log In
+            </Button>
+          ) : (
+            <Button className="w-50" variant="primary" type="submit" disabled>
+              Logging In...
+            </Button>
+          )}
+        </div>
+
         <div className="d-grid justify-content-end">
           <Button
             className="text-muted px-0"
