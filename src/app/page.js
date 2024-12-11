@@ -1,5 +1,3 @@
-import UserPage from "./user/[_id]/profile/page";
-import AdminPage from "./admin/[_id]/profile/page";
 import GuestHome from "./GuestHome";
 
 import { createClient } from "../../utils/supabase/server";
@@ -17,7 +15,7 @@ const Root = async () => {
 
   const userIsAdmin = await isAdmin(user.email);
 
-  userIsAdmin ? redirect(`/admin/${user.id}/profile`) : redirect(`/user/${user.id}/profile`)
+  userIsAdmin ? redirect(`/admin/appointments/listView`) : redirect(`/user/${user.id}/profile`)
 }
 
 export default Root;
