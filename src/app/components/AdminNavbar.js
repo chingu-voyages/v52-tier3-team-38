@@ -1,14 +1,13 @@
 "use client";
 
 import { Container, Nav, Navbar, Button } from "react-bootstrap";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { logout } from "../../../utils/supabase/actions";
 import { FaGithub } from "react-icons/fa";
-import { PiSunBold, PiUserDuotone, PiCalendarDuotone, PiQuestionMarkFill } from "react-icons/pi";
+import { PiSunBold, PiCalendarDuotone, PiQuestionMarkFill } from "react-icons/pi";
 
 const AdminNavbar = () => {
   const router = useRouter();
-  const { _id } = useParams();
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
@@ -25,8 +24,7 @@ const AdminNavbar = () => {
           <Nav className="ms-auto me-3">
             {/* Desktop view: Horizontal list without icons */}
             <div className="d-none d-lg-flex">
-              <Nav.Link href={`/admin/${_id}/profile`} className="px-3">Profile</Nav.Link>
-              <Nav.Link href={`/admin/${_id}/schedule`} className="px-3">Schedule</Nav.Link>
+              <Nav.Link href="/admin" className="px-3">Appointments</Nav.Link>
               <Nav.Link href="/about" className="px-3">About Us</Nav.Link>
               <Nav.Link 
                 href="https://github.com/chingu-voyages/v52-tier3-team-38" 
@@ -39,13 +37,9 @@ const AdminNavbar = () => {
 
             {/* Mobile view: Vertical list with icons and labels */}
             <div className="d-lg-none">
-              <Nav.Link href={`/admin/${_id}/profile`} className="py-3 d-flex align-items-center">
-                <PiUserDuotone className="me-3 fs-2" />
-                <span className="fs-6">Profile</span>
-              </Nav.Link>
-              <Nav.Link href={`/admin/${_id}/schedule`} className="py-3 d-flex align-items-center">
+              <Nav.Link href="/admin" className="py-3 d-flex align-items-center">
                 <PiCalendarDuotone className="me-3 fs-2" />
-                <span className="fs-6">Schedule</span>
+                <span className="fs-6">Appointments</span>
               </Nav.Link>
               <Nav.Link href="/about" className="py-3 d-flex align-items-center">
                 <PiQuestionMarkFill className="me-3 fs-2" />
