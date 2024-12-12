@@ -1,15 +1,12 @@
 import "./globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import UserHeader from "./components/UserHeader";
 import UserNavbar from "./components/UserNavbar";
-import UnauthHeader from "./components/UnauthHeader";
 import UnauthNavbar from "./components/UnauthNavbar";
 
 import { isAdmin } from "../../utils/supabase/isAdmin";
 
 import { createClient } from "../../utils/supabase/server";
-import AdminHeader from "./components/AdminHeader";
 import AdminNavbar from "./components/AdminNavbar";
 
 export const metadata = {
