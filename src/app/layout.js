@@ -25,9 +25,8 @@ export default async function RootLayout({ children }) {
     return (
       <html lang="en" suppressHydrationWarning>
         <body>
-          <UnauthHeader />
+        <UnauthNavbar />
           {children}
-          <UnauthNavbar />
         </body>
       </html>
     );
@@ -39,9 +38,8 @@ export default async function RootLayout({ children }) {
     return (
       <html lang="en" suppressHydrationWarning>
         <body>
-          <AdminHeader />
+        <AdminNavbar />
           {children}
-          <AdminNavbar />
         </body>
       </html>
     );
