@@ -16,7 +16,7 @@ export const GET = async() => {
 export const DELETE = async(request) => { //handle cancelled appointments
     const supabase = await createClient();
 
-    const body = await request.json(); 
+    const body = await request.json();
     const { id } = body
 
     const response = await supabase.from("appointments").delete("*").eq("resident_id", id);
