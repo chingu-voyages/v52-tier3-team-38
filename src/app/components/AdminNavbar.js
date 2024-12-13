@@ -24,10 +24,10 @@ const AdminNavbar = () => {
           <Nav className="ms-auto me-3">
             {/* Desktop view: Horizontal list without icons */}
             <div className="d-none d-lg-flex">
-              <Nav.Link href="/admin" className="px-3">Appointments</Nav.Link>
+              <Nav.Link href="/admin/appointments/listView" className="px-3">Appointments</Nav.Link>
               <Nav.Link href="/about" className="px-3">About Us</Nav.Link>
-              <Nav.Link 
-                href="https://github.com/chingu-voyages/v52-tier3-team-38" 
+              <Nav.Link
+                href="https://github.com/chingu-voyages/v52-tier3-team-38"
                 target="_blank"
                 className="px-3"
               >
@@ -37,7 +37,7 @@ const AdminNavbar = () => {
 
             {/* Mobile view: Vertical list with icons and labels */}
             <div className="d-lg-none">
-              <Nav.Link href="/admin" className="py-3 d-flex align-items-center">
+              <Nav.Link href="/admin/appointments/listView" className="py-3 d-flex align-items-center">
                 <PiCalendarDuotone className="me-3 fs-2" />
                 <span className="fs-6">Appointments</span>
               </Nav.Link>
@@ -45,8 +45,8 @@ const AdminNavbar = () => {
                 <PiQuestionMarkFill className="me-3 fs-2" />
                 <span className="fs-6">About Us</span>
               </Nav.Link>
-              <Nav.Link 
-                href="https://github.com/chingu-voyages/v52-tier3-team-38" 
+              <Nav.Link
+                href="https://github.com/chingu-voyages/v52-tier3-team-38"
                 target="_blank"
                 className="py-3 d-flex align-items-center"
               >

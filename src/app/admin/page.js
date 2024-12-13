@@ -5,9 +5,9 @@ import MapView from "../components/AppointmentMapView"
 
 const Admin = ({searchParams}) => {
   const [view, setView] = useState(true)
-  
+
   return view ? <AppointmentListView view={view} setView={setView} searchParams={searchParams}/> : <MapView view={view} setView={setView}/>
-  
+
 }
 
 export default Admin;
