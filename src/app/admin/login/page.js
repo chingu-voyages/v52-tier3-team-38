@@ -30,33 +30,42 @@ const Login = () => {
   };
 
   return (
-      <Container>
-        <h2 className="text-center mt-4">Admin Login</h2> 
-        { error ? <Alert
-            className="mb-2"
-            variant="danger"
-            onClose={() => setError(false)}
-            dismissible
-          >
-            {errorMessage}
-          </Alert> : "" }
-        <Form onSubmit={handleSubmit} className="mt-4 shadow p-4 bg-white rounded"> 
-          <Form.Group className="mb-2" controlId="email">
-            <Form.Label>email</Form.Label>
-            <Form.Control
-              type="text"
-              value={email}
-              placeholder="Email"
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Button variant="primary" className="d-flex align-items-center" type="submit" disabled={loading}>
-          {loading === true ? 'Loading...' : 'Sign in with Google'}
-          </Button>
-        </Form>
-      </Container>
-      
+   <Container className="bg-white p-4">
+  <h2 className="text-center mt-4 text-black">Admin Login</h2>
+  {error ? (
+    <Alert
+      className="mb-2"
+      variant="danger"
+      onClose={() => setError(false)}
+      dismissible
+    >
+      {errorMessage}
+    </Alert>
+  ) : (
+    ""
+  )}
+  <Form onSubmit={handleSubmit} className="mt-4 shadow p-4 bg-white rounded">
+    <Form.Group className="mb-2" controlId="email">
+      <Form.Label className="text-black">Email</Form.Label>
+      <Form.Control
+        type="text"
+        value={email}
+        placeholder="Email"
+        className="bg-white text-black"
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+    </Form.Group>
+    <Button
+      variant="primary"
+      className="d-flex align-items-center"
+      type="submit"
+      disabled={loading}
+    >
+      {loading === true ? "Loading..." : "Sign in with Google"}
+    </Button>
+  </Form>
+</Container>
   )
 };
 
